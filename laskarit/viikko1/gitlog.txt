@@ -1,0 +1,113 @@
+commit 0d2408479c59e33b2a93485512dbf8c2d68e5618
+Author: Sini Arkko <sini.arkko@gmail.com>
+Date:   Mon Nov 8 20:06:37 2021 +0200
+
+    tiedoston poisto ja uudelleen nimeäminen
+
+ tiedostoja/file2             | 0
+ tiedostoja/{file1 => file22} | 0
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+
+commit 60deb9fc3717757e029a68c083e777dd8c860e49
+Author: Sini Arkko <sini.arkko@gmail.com>
+Date:   Mon Nov 8 19:52:47 2021 +0200
+
+    tiedostoja luotu
+
+ tiedostoja/file1 | 0
+ tiedostoja/file2 | 0
+ tiedostoja/file3 | 0
+ 3 files changed, 0 insertions(+), 0 deletions(-)
+
+commit d2e710e0434778eb16db58ec5408f0f099644301
+Author: Sini Arkko <sini.arkko@gmail.com>
+Date:   Mon Nov 8 19:46:11 2021 +0200
+
+    lisää muutoksia tiedostoihin
+
+ eka.txt    | 13 ++++---------
+ kolmas.txt |  2 +-
+ 2 files changed, 5 insertions(+), 10 deletions(-)
+
+commit ac2780dcf33f8969d2e14f981eac9c609148aa7d
+Author: Sini Arkko <sini.arkko@gmail.com>
+Date:   Mon Nov 8 19:34:47 2021 +0200
+
+    tiedosto nimetty uudelleen
+
+ tiedosto.txt => eka.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 2602fa5a7e3f95c1b53d3d80a7126fcd6b614978
+Author: Sini Arkko <sini.arkko@gmail.com>
+Date:   Mon Nov 8 19:33:09 2021 +0200
+
+    toinen tiedosto poistettu
+
+ toinen.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+commit d4e6c9ff96a152ac4ed7cf444a8e03288c27526f
+Author: Sini Arkko <sini.arkko@gmail.com>
+Date:   Mon Nov 8 19:29:54 2021 +0200
+
+    tiedostoa muokattu
+
+ tiedosto.txt | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
+
+commit c3c09564834668efdd0307906eca1424a0d6e913
+Author: Sini Arkko <sini.arkko@gmail.com>
+Date:   Mon Nov 8 19:27:03 2021 +0200
+
+    tiedostoon lisätty tekstiä
+
+ tiedosto.txt | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
+
+commit 468c8c5de7401e2c047fe9e0a30473b88906c975
+Author: Sini Arkko <sini.arkko@gmail.com>
+Date:   Mon Nov 8 19:12:07 2021 +0200
+
+    stuff-hakemisto luotu
+
+ stuff/stuff1.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit dcd420f0a2f9ae39681eea576ec719bd3dfcf2aa
+Author: Sini Arkko <sini.arkko@gmail.com>
+Date:   Mon Nov 8 19:09:18 2021 +0200
+
+    muutos tiedostoihin 2 ja 3
+
+ kolmas.txt | 1 +
+ toinen.txt | 1 +
+ 2 files changed, 2 insertions(+)
+
+commit 336a6c2a82861957664200777e8df6a301973ef7
+Author: Sini Arkko <sini.arkko@gmail.com>
+Date:   Mon Nov 8 19:06:54 2021 +0200
+
+    kolmas tiedosto luotu
+
+ kolmas.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+
+commit 6a28d87b98792401c7f727dab9acd2b2f4bf4330
+Author: Sini Arkko <sini.arkko@gmail.com>
+Date:   Mon Nov 8 19:03:01 2021 +0200
+
+    muutos ja lisäys
+
+ tiedosto.txt | 1 +
+ toinen.txt   | 0
+ 2 files changed, 1 insertion(+)
+
+commit 74d891b4cf72fe975caf5f68976b01e4f17b19dd
+Author: Sini Arkko <sini.arkko@gmail.com>
+Date:   Mon Nov 8 18:59:38 2021 +0200
+
+    tiedosto.txt luotu
+
+ tiedosto.txt | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
