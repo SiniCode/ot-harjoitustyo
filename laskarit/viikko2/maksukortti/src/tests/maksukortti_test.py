@@ -7,7 +7,4 @@ class TestMaksukortti(unittest.TestCase):
 
     def test_konstruktori_asettaa_saldon_oikein(self):
         kortti = Maksukortti(10)
-
-        vastaus = str(kortti)
-
-        self.assertEqual(vastaus, "Kortilla on rahaa 10 euroa")
+        self.assertEqual(str(kortti), "Kortilla on rahaa 9 euroa")
