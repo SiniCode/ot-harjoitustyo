@@ -17,3 +17,8 @@ Harjoitellaan **versionhallintaa** ja *pushaamista* GitHubiin.
 #### Tiedostot
 * [komentorivi.txt](https://github.com/SiniCode/ot-harjoitustyo/blob/main/laskarit/viikko1/komentorivi.txt)
 * [gitlog.txt](https://github.com/SiniCode/ot-harjoitustyo/blob/main/laskarit/viikko1/gitlog.txt)
+
+### Viikko 2
+Harjoitellaan *poetryn* käyttöä ja **testaamista** (*Unittest*)
+#### Tiedostot
+* [Testikattavuusraportti](https://github.com/SiniCode/ot-harjoitustyo/blob/main/laskarit/viikko2/Coverage_Report_Screenshot.png)
