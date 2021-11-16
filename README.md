@@ -12,7 +12,7 @@ Jokaisella käyttäjällä on sovellukseen oma käyttäjätunnus ja salasana.
 ## Laskarit
 
 ### Viikko 1
-Harjoitellaan **versionhallintaa** ja *pushaamista* GitHubiin.
+Harjoitellaan **versionhallintaa** ja *pushaamista* GitHubiin
 
 #### Tiedostot
 * [komentorivi.txt](https://github.com/SiniCode/ot-harjoitustyo/blob/main/laskarit/viikko1/komentorivi.txt)
