@@ -12,7 +12,7 @@ class TestKassapaate(unittest.TestCase):
         self.assertEqual(self.kassa.kassassa_rahaa, 100000)
 
     def test_luodussa_kassassa_nolla_edullista_lounasta(self):
-        self.assertEquel(self.kassa.edulliset, 0)
+        self.assertEqual(self.kassa.edulliset, 0)
 
     def test_luodussa_kassassa_nolla_maukasta_lounasta(self):
         self.assertEqual(self.kassa.maukkaat, 0)
