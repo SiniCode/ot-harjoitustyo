@@ -19,7 +19,7 @@ class TestKassapaate(unittest.TestCase):
 
     def test_edullinen_kateisosto_kasvattaa_kassan_rahamaaraa_oikein(self):
         self.kassa.syo_edullisesti_kateisella(240)
-        self.assertEqual(self.kassa.kassassa_rahaa, 10240)
+        self.assertEqual(self.kassa.kassassa_rahaa, 100240)
 
     def test_edullisesta_kateisostoksesta_vaihtorahat_oikein(self):
         self.assertEqual(self.kassa.syo_edullisesti_kateisella(300), 60)
@@ -30,7 +30,7 @@ class TestKassapaate(unittest.TestCase):
 
     def test_maukas_kateisosto_kasvattaa_kassan_rahamaaraa_oikein(self):
         self.kassa.syo_maukkaasti_kateisella(400)
-        self.assertEqual(self.kassa.kassassa_rahaa, 10400)
+        self.assertEqual(self.kassa.kassassa_rahaa, 100400)
 
     def test_maukkaasta_kateisostoksesta_vaihtorahat_oikein(self):
         self.assertEqual(self.kassa.syo_maukkaasti_kateisella(500), 100)
@@ -41,7 +41,7 @@ class TestKassapaate(unittest.TestCase):
 
     def test_kassan_rahamaara_ei_muutu_jos_kateinen_ei_riita_edulliseen(self):
         self.kassa.syo_edullisesti_kateisella(200)
-        self.assertEqual(self.kassa.kassassa_rahaa, 10000)
+        self.assertEqual(self.kassa.kassassa_rahaa, 100000)
 
     def test_kaikki_rahat_palautetaan_jos_kateinen_ei_riita_edulliseen(self):
         self.assertEqual(self.kassa.syo_edullisesti_kateisella(200), 200)
@@ -52,7 +52,7 @@ class TestKassapaate(unittest.TestCase):
 
     def test_kassan_rahamaara_ei_muutu_jos_kateinen_ei_riita_maukkaaseen(self):
         self.kassa.syo_maukkaasti_kateisella(350)
-        self.assertEqual(self.kassa.kassassa_rahaa, 10000)
+        self.assertEqual(self.kassa.kassassa_rahaa, 100000)
 
     def test_kaikki_rahat_palautetaan_jos_kateinen_ei_riita_maukkaaseen(self):
         self.assertEqual(self.kassa.syo_maukkaasti_kateisella(350), 350)
@@ -66,7 +66,7 @@ class TestKassapaate(unittest.TestCase):
 
     def test_edullinen_korttiosto_ei_kasvata_kassan_rahamaaraa(self):
         self.kassa.syo_edullisesti_kortilla(self.kortti1)
-        self.assertEqual(self.kassa.kassassa_rahaa, 10000)
+        self.assertEqual(self.kassa.kassassa_rahaa, 100000)
 
     def test_edullinen_korttiostos_laskee_kortin_saldoa_oikein(self):
         self.kassa.syo_edullisesti_kortilla(self.kortti1)
@@ -81,11 +81,11 @@ class TestKassapaate(unittest.TestCase):
 
     def test_maukas_korttisosto_ei_kasvata_kassan_rahamaaraa(self):
         self.kassa.syo_maukkaasti_kortilla(self.kortti1)
-        self.assertEqual(self.kassa.kassassa_rahaa, 10000)
+        self.assertEqual(self.kassa.kassassa_rahaa, 100000)
 
     def test_maukas_korttiostos_laskee_kortin_saldoa_oikein(self):
         self.kassa.syo_maukkaasti_kortilla(self.kortti1)
-        self.assertEqual(str(self.kortti1), 0.0)
+        self.assertEqual(str(self.kortti1), "saldo: 0.0")
 
     def test_maukas_korttisosto_kasvattaa_myytyjen_lounaiden_maaraa(self):
         self.kassa.syo_maukkaasti_kortilla(self.kortti1)
@@ -96,7 +96,7 @@ class TestKassapaate(unittest.TestCase):
 
     def test_kassan_rahamaara_ei_muutu_jos_saldo_ei_riita_edulliseen(self):
         self.kassa.syo_edullisesti_kortilla(self.kortti2)
-        self.assertEqual(self.kassa.kassassa_rahaa, 10000)
+        self.assertEqual(self.kassa.kassassa_rahaa, 100000)
 
     def test_kortin_saldo_ei_muutu_jos_saldo_ei_riita_edulliseen(self):
         self.kassa.syo_edullisesti_kortilla(self.kortti2)
@@ -111,7 +111,7 @@ class TestKassapaate(unittest.TestCase):
 
     def test_kassan_rahamaara_ei_muutu_jos_saldo_ei_riita_maukkaaseen(self):
         self.kassa.syo_maukkaasti_kortilla(self.kortti2)
-        self.assertEqual(self.kassa.kassassa_rahaa, 10000)
+        self.assertEqual(self.kassa.kassassa_rahaa, 100000)
 
     def test_kortin_saldo_ei_muutu_jos_saldo_ei_riita_maukkaaseen(self):
         self.kassa.syo_maukkaasti_kortilla(self.kortti2)
@@ -127,4 +127,4 @@ class TestKassapaate(unittest.TestCase):
 
     def rahan_lataaminen_kortille_kasvattaa_kassaa_oikein(self):
         self.kassa.lataa_rahaa_kortille(self.kortti1, 600)
-        self.assertEqual(self.kassa.kassassa_rahaa, 10600)
+        self.assertEqual(self.kassa.kassassa_rahaa, 100600)
