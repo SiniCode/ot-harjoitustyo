@@ -4,7 +4,7 @@ def drop_tables(connection):
     cursor = connection.cursor()
 
     cursor.execute('''
-        drop table if exits Users;
+        drop table if exists Users;
     ''')
 
     connection.commit()
