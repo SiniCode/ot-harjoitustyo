@@ -59,6 +59,7 @@ class UI:
                 continue
 
     def main(self):
+        self.options()
         option = input("Choose option: ")
         if int(option) == 1:
             self.login()
