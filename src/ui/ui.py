@@ -24,7 +24,6 @@ class UI:
         while True:
             confirm = input("Do you want to log in? (y/n): ")
             if confirm == "n":
-                self.options()
                 return False
             username = input("Username: ")
             password = input("Password: ")
@@ -34,6 +33,7 @@ class UI:
                 print(f'Welcome, {username}!') 
                 return True
             except InvalidCredentialsError:
+                print("Invalid username or password")
                 continue
 
     def create_user(self):
@@ -46,7 +46,6 @@ class UI:
         while True:
             confirm = input("Do you want to create a new user? (y/n) ")
             if confirm == "n":
-                self.options()
                 return False
             username = input("Username (3-15 characters): ")
             password = input("Password (3-15 characters): ")
@@ -55,7 +54,15 @@ class UI:
                 service.create_user(username, password)
                 print(f'Welcome, {username}!')
                 return True
-            except (UsernameExistsError, UsernameNotValidError, PasswordNotValidError):
+            except UsernameExistsError:
+                print(f'Username {username} is already in use')
+                continue
+            except UsernameNotValidError:
+                print("Invalid username")
+                continue
+            except PasswordNotValidError:
+                print("Invalid password")
+                continue
                 continue
 
     def main(self):
