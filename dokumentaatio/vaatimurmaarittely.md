@@ -8,7 +8,7 @@ Jokaisella käyttäjällä on sovellukseen oma käyttäjätunnus ja salasana.
 
 ## Perustoiminnallisuus
 
-### Ennen kirjautumista
+### Ennen kirjautumista (toteutettu)
 
 - käyttäjä voi luoda uuden käyttäjätunnuksen ja asettaa sille salasanan
   - kaikkien käyttäjätunnusten tulee olla erilaisia keskenään, tunnus on 3-15 merkkiä pitkä
