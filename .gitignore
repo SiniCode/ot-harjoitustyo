@@ -1,4 +1,7 @@
-/laskarit/viikko2/unicafe/.pytest_cache
-/laskarit/viikko2/unicafe/src/__pycache__
-/laskarit/viikko2/unicafe/.coverage
-/laskarit/viikko2/unicafe/htmlcov
+.pytest_cache
+.coverage
+htmlcov
+__pycache__
+
+data/database.sqlite
+data/test-database.sqlite
