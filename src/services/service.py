@@ -31,7 +31,7 @@ class Service:
         self._user = None
         self._user_repository = user_repository
 
-    def create_user(self, username, password)
+    def create_user(self, username, password):
         """Luokan metodi, joka luo uuden käyttäjän ja kirjaa sen samalla sisään.
 
         Args:
