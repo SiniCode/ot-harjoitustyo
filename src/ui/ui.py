@@ -44,7 +44,7 @@ class UI:
         """
 
         while True:
-            confirm = input("Do you want to create a new user? (y/n) "
+            confirm = input("Do you want to create a new user? (y/n) ")
             if confirm == "n":
                 self.options()
                 return False
