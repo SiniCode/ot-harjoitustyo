@@ -53,5 +53,15 @@ class UserRepository:
 
         return get_user_by_row(row)
 
+    def delete_all(self):
+        """Luokan metodi, joka poistaa kaikki käyttäjät."""
+
+        cursor = self._connection.cursor()
+
+        cursor.execute('DELETE FROM Users')
+
+        self._connection.commit()
+
+
 user_repository = UserRepository(get_db_connection())
 
