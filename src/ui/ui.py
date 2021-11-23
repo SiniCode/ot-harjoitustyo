@@ -65,4 +65,5 @@ class UI:
         elif int(option) == 2:
             self.create_user()
 
-ui = UI()
+if __name__ == '__main__':
+    ui = UI()
