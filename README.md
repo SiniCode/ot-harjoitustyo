@@ -33,7 +33,7 @@ poetry run invoke start
 
 #### Ohjelman suorittaminen
 
-Ohjelman pystyy suorittamaan komennolla:
+Ohjelman voi suorittaa komennolla:
 
 ```bash
 poetry run invoke start
