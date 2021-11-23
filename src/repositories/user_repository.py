@@ -51,7 +51,7 @@ class UserRepository:
 
         row = cursor.fetchone()
 
-        return get_user_by_row()
+        return get_user_by_row(row)
 
 user_repository = UserRepository(get_db_connection())
 
