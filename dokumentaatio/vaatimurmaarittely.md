@@ -20,13 +20,15 @@ Jokaisella käyttäjällä on sovellukseen oma käyttäjätunnus ja salasana.
 
 ### Kirjautumisen jälkeen
 
-- käyttäjä voi tallentaa sovelluksen tietokantaan reseptin nimen ja siihen tarvittavat raaka-aineet
+- käyttäjä voi tallentaa sovelluksen tietokantaan reseptin nimen ja siihen tarvittavat raaka-aineet (tehty)
 
-- käyttäjä voi hakea tallentamiaan reseptejä nimen tai raaka-aineen perusteella
+- käyttäjä voi hakea kaikkien tallentamiensa reseptien nimet (tehty)
+
+- käyttäjä voi hakea tallentamiaan reseptejä nimen tai raaka-aineen perusteella (haku nimen perusteella tehty)
 
 - käyttäjä voi poistaa tallentamansa reseptin
 
-- käyttäjä voi kirjautua ulos järjestelmästä
+- käyttäjä voi kirjautua ulos järjestelmästä (tehty)
 
 ## Jatkokehitysideoita
 
