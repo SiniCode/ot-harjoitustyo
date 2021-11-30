@@ -12,8 +12,17 @@ class UI:
         """Luokan metodi, joka tulostaa aluksi käyttäjän vaihtoehdot."""
 
         print("Options")
-        print("1: kirjaudu sisään")
-        print("2: luo uusi käyttäjä")
+        print("1: log in")
+        print("2: create new user")
+
+    def logged_in_options(self):
+        """Luokan metodi, joka tulostaa kirjautuneen käyttäjän vaihtoehdot."""
+
+        print("Options")
+        print("1: add new recipe")
+        print("2: find all recipes")
+        print("3: find a recipe")
+        print("4: log out")
 
     def login(self):
         """Luokan metodi, joka kirjaa käyttäjän sisään.
@@ -64,16 +73,95 @@ class UI:
             except PasswordNotValidError:
                 print("Invalid password")
                 continue
-                continue
+
+    def add_recipe(self):
+        """Luokan metodi, jonka avulla kirjautunut käyttäjä voi lisätä uuden reseptin tietokantaan."""
+
+        name = input("Name the recipe: ")
+        ingredients = []
+
+        while True:
+            confirm = input("Would you like to add an ingredient to the recipe? (y/n) ")
+            if confirm == "n":
+                break
+
+            ingredient = input("Ingredient: ")
+            amount = input("Amount: ")
+            ingredients.append((ingredient, amount))
+
+        service.add_recipe(name, ingredients)
+
+        self.logged_in_main()
+
+    def find_all_recipes(self):
+        """Luokan metodi, joka tulostaa käyttäjän tallentamien reseptien nimet aakkosjärjestyksessä."""
+
+        recipes = service.find_recipes()
+
+        print("Saved recipes:")
+
+        for r in recipes:
+            print(r)
+
+        self.logged_in_main()
+
+    def find_ingredients(self):
+        """Luokan metodi, joka tulostaa annetun reseptin ainekset ja niiden määrät tallennusjärjestyksessä."""
+
+        name = input("Which recipe would you like to see? ")
+        ingredients = service.find_ingredients(name)
+
+        print(f"The ingredients of {name}:")
+
+        for i in ingredients:
+            print(f"{i[0]:50} {i[1]}")
+
+        self.logged_in_main()
+
+    def logout(self):
+        """Luokan metodi, jonka avulla käyttäjä voi kirjautua ulos."""
+
+        confirmation = input("Do you want to log out? (y/n) ")
+        if confirmation == "n":
+            self.logged_in_main()
+
+        else:
+            service.logout()
+            self.main()
 
     def main(self):
         self.options()
+
         option = input("Choose option: ")
+
         if int(option) == 1:
             self.login()
+
         elif int(option) == 2:
             self.create_user()
 
+        else:
+            self.main()
+
+    def logged_in_main(self):
+        self.logged_in_options()
+
+        option = input("Choose option: ")
+
+        if int(option) == 1:
+            self.add_recipe()
+
+        elif int(option) == 2:
+            self.find_all_recipes()
+
+        elif int(option) == 3:
+            self.find_ingredients()
+
+        elif int(option) == 4:
+            self.logout()
+
+        else:
+            self.logged_in_main()
 
 if __name__ == '__main__':
     ui = UI()
