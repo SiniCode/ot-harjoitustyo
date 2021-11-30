@@ -1,7 +1,12 @@
 from entities.user import User
+from entities.recipe import Recipe
 
 from repositories.user_repository import (
     user_repository as default_user_repository
+)
+
+from repositories.recipe_repository import (
+    recipe_repocitory as default_recipe_repository
 )
 
 
@@ -24,15 +29,17 @@ class InvalidCredentialsError(Exception):
 class Service:
     """Luokka, joka vastaa sovelluslogiikasta."""
 
-    def __init__(self, user_repository=default_user_repository):
+    def __init__(self, user_repository=default_user_repository, recipe_repository=default_recipe_repository):
         """Luokan konstruktori.
 
         Args:
             user_repository: UserRepository-luokan olio, vapaaehtoinen
+            recipe_repository: RecipeRepository-luokan olio, vapaaehtoinen
         """
 
         self._user = None
         self._user_repository = user_repository
+        self._recipe_repository = recipe_repository
 
     def create_user(self, username, password):
         """Luokan metodi, joka luo uuden käyttäjän ja kirjaa sen samalla sisään.
@@ -96,13 +103,63 @@ class Service:
         self._user = None
 
     def get_current_user(self):
-        """Palauttaa kirjautuneen käyttäjän.
+        """Luokan metodi, joka palauttaa kirjautuneen käyttäjän.
 
         Returns:
             User-olio, joka kuvaa kirjautunutta käyttäjää
         """
 
         return self._user
+
+
+    def add_recipe(self, name, ingredients=[]):
+        """Luokan metodi, joka lisää reseptin tietokantaan.
+
+        Args:
+            name: merkkijono, joka nimeää reseptin
+            ingredients: lista tupleja, jotka ilmoittavat reseptiin tarvittavat ainekset ja niiden määrän, vapaaehtoinen
+
+        Returns:
+            Recipe-olio, joka kuvaa tallennetun reseptin
+        """
+
+        user = self.get_current_user()
+        recipe = Recipe(name, ingredients)
+
+        self._recipe_repository.add_recipe(recipe, user)
+        return recipe
+
+    def find_recipes(self):
+        """Luokan metodi, joka hakee kirjautuneen käyttäjän reseptit tietokannasta.
+
+        Returns:
+            lista kirjautuneen käyttäjän tallentamien reseptien nimistä aakkosjärjestyksessä
+        """
+
+        user = self.get_current_user()
+        recipes = self._recipe_repository.find_recipes_by_user(user)
+
+        result = []
+        for recipe in recipes:
+            result.append(recipe[0])
+
+        result.sort()
+        return result
+
+    def find_ingredients(self, recipe):
+        """Luokan metodi, joka hakee pyydettyyn reseptiin tarvittavat raaka-aineet.
+
+        Args:
+            recipe: merkkijono, joka kertoo haettavan reseptin nimen
+
+        Returns:
+            lista reseptiin tarvittavista raaka-aineista ja niiden määristä tallennusjärjestyksessä
+        """
+
+        user = self.get_current_user()
+        ingredients = self._recipe_repository.find_ingredients_by_recipe(recipe, user)
+
+        return ingredients
 
 
 service = Service()
