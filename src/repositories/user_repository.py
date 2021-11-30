@@ -1,8 +1,10 @@
 from entities.user import User
 from database_connection import get_db_connection
 
+
 def get_user_by_row(row):
     return User(row['username'], row['password']) if row else None
+
 
 class UserRepository:
     """Luokka, joka vastaa käyttäjiin liittyvistä tietokantaoperaatioista."""
@@ -28,7 +30,8 @@ class UserRepository:
 
         cursor = self._connection.cursor()
 
-        cursor.execute('INSERT INTO Users (username, password) values (?, ?)', [user.username, user.password])
+        cursor.execute('INSERT INTO Users (username, password) values (?, ?)', [
+                       user.username, user.password])
 
         self._connection.commit()
 
@@ -64,4 +67,3 @@ class UserRepository:
 
 
 user_repository = UserRepository(get_db_connection())
-

@@ -8,11 +8,14 @@ from repositories.user_repository import (
 class UsernameExistsError(Exception):
     pass
 
+
 class UsernameNotValidError(Exception):
     pass
 
+
 class PasswordNotValidError(Exception):
     pass
+
 
 class InvalidCredentialsError(Exception):
     pass
@@ -52,10 +55,12 @@ class Service:
             raise UsernameExistsError(f'Username {username} is already in use')
 
         if len(username) < 3 or len(username) > 15:
-           raise UsernameNotValidError("Username must be 3 to 15 characters long")
+            raise UsernameNotValidError(
+                "Username must be 3 to 15 characters long")
 
         if len(password) < 3 or len(password) > 15:
-           raise PasswordNotValidError("Password must be 3 to 15 characters long")
+            raise PasswordNotValidError(
+                "Password must be 3 to 15 characters long")
 
         user = self._user_repository.create_user(User(username, password))
         self._user = user
@@ -79,7 +84,7 @@ class Service:
         user = self._user_repository.find_by_username(username)
 
         if user == None or user.password != password:
-             raise InvalidCredentialsError("Invalid username or password")
+            raise InvalidCredentialsError("Invalid username or password")
 
         self._user = user
 

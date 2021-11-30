@@ -6,7 +6,7 @@ class Recipe:
         ingredients: lista tupleja, jotka ilmoittavat reseptiin tarvittavat ainekset ja niiden määrän
     """
 
-    def __init__(self, name, ingredients = []):
+    def __init__(self, name, ingredients=[]):
         """Luokan konstruktori, joka luo uuden reseptin.
 
         Args:
@@ -38,4 +38,3 @@ class Recipe:
             if ing[0] == ingredient:
                 self.ingredients.remove(ing)
                 break
-

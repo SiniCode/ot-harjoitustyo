@@ -1,5 +1,6 @@
 from services.service import service, UsernameExistsError, UsernameNotValidError, PasswordNotValidError, InvalidCredentialsError
 
+
 class UI:
     """Luokka, joka tarjoaa käyttöliittymän sovellukseen."""
 
@@ -30,7 +31,7 @@ class UI:
 
             try:
                 service.login(username, password)
-                print(f'Welcome, {username}!') 
+                print(f'Welcome, {username}!')
                 return True
             except InvalidCredentialsError:
                 print("Invalid username or password")
@@ -72,6 +73,7 @@ class UI:
             self.login()
         elif int(option) == 2:
             self.create_user()
+
 
 if __name__ == '__main__':
     ui = UI()
