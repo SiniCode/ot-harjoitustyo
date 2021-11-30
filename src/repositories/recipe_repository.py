@@ -5,6 +5,8 @@ from database_connection import get_db_connection
 def get_id_by_row(row):
     return row['id'] if row else None
 
+def get_name_by_row(row):
+    return row['name'] if row else None
 
 class RecipeRepository:
     """Luokka, joka vastaa resepteihin liittyvistä tietokantaoperaatioista."""
@@ -70,9 +72,13 @@ class RecipeRepository:
 
 
         recipes = cursor.execute(
-            "SELECT name FROM Recipes WHERE user_id=?", [user_id]).fetchall()
+            "SELECT * FROM Recipes WHERE user_id=?", [user_id]).fetchall()
 
-        return recipes
+        result = []
+        for row in recipes:
+            result.append(get_name_by_row(row))
+
+        return result
 
     def find_ingredients_by_recipe(self, recipe, user):
         """Luokan metodi, joka etsii annettuun reseptiin tarvittavat raaka-aineet ja niiden määrän.
@@ -98,7 +104,11 @@ class RecipeRepository:
         ingredients = cursor.execute(
             "SELECT I.name, I.amount FROM Ingredients I, Recipes R, Users U WHERE R.id = I.recipe_id AND R.user_id = U.id AND R.id=? AND U.id=?", (recipe_id, user_id)).fetchall()
 
-        return ingredients
+        result = []
+        for (name, amount) in ingredients:
+            result.append((name, amount))
+
+        return result
 
     def delete_all(self):
         """Luokan metodi, joka poistaa kaikki reseptit ja ainekset."""
