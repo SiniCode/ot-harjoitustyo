@@ -2,11 +2,14 @@ from entities.recipe import Recipe
 from entities.user import User
 from database_connection import get_db_connection
 
+
 def get_id_by_row(row):
     return row['id'] if row else None
 
+
 def get_name_by_row(row):
     return row['name'] if row else None
+
 
 class RecipeRepository:
     """Luokka, joka vastaa resepteihin liittyvistä tietokantaoperaatioista."""
@@ -19,7 +22,6 @@ class RecipeRepository:
         """
 
         self._connection = connection
-
 
     def add_recipe(self, recipe, user):
         """Tallentaa uuden reseptin tietokantaan.
@@ -45,7 +47,6 @@ class RecipeRepository:
             "SELECT * FROM Recipes WHERE name=?", [recipe.name]).fetchone()
         recipe_id = get_id_by_row(row)
 
-
         for (name, amount) in recipe.ingredients:
             cursor.execute(
                 "INSERT INTO Ingredients (name, amount, recipe_id) VALUES (?, ?, ?)", [name, amount, recipe_id])
@@ -69,7 +70,6 @@ class RecipeRepository:
         row = cursor.execute(
             "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
         user_id = get_id_by_row(row)
-
 
         recipes = cursor.execute(
             "SELECT * FROM Recipes WHERE user_id=?", [user_id]).fetchall()
@@ -120,7 +120,6 @@ class RecipeRepository:
         cursor.execute("DELETE FROM Ingredients")
 
         self._connection.commit()
-
 
 
 recipe_repository = RecipeRepository(get_db_connection())

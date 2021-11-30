@@ -86,7 +86,8 @@ class UI:
         ingredients = []
 
         while True:
-            confirm = input("Would you like to add an ingredient to the recipe? (y/n) ")
+            confirm = input(
+                "Would you like to add an ingredient to the recipe? (y/n) ")
             if confirm == "n":
                 break
 
@@ -175,7 +176,6 @@ class UI:
         except ValueError:
             self.logged_in_main()
 
-
         if op == 1:
             self.add_recipe()
 
@@ -190,6 +190,7 @@ class UI:
 
         else:
             self.logged_in_main()
+
 
 if __name__ == '__main__':
     ui = UI()

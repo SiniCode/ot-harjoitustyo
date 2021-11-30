@@ -111,7 +111,6 @@ class Service:
 
         return self._user
 
-
     def add_recipe(self, name, ingredients=[]):
         """Luokan metodi, joka lisää reseptin tietokantaan.
 
@@ -157,7 +156,8 @@ class Service:
         """
 
         user = self.get_current_user()
-        ingredients = self._recipe_repository.find_ingredients_by_recipe(recipe, user)
+        ingredients = self._recipe_repository.find_ingredients_by_recipe(
+            recipe, user)
 
         return ingredients
 
