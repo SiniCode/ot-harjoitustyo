@@ -21,6 +21,20 @@ def create_tables(connection):
             password TEXT);
     ''')
 
+    cursor.execute('''
+        CREATE TABLE Recipes (
+            id INTEGER PRIMARY KEY,
+            name TEXT
+            user_id INTEGER);
+    ''')
+
+    cursor.execute('''
+        CREATE TABLE Ingredients (
+            name TEXT,
+            amount TEXT,
+            recipe_id INTEGER);
+    ''')
+
     connection.commit()
 
 
