@@ -56,3 +56,19 @@ poetry run invoke coverage-report
 ```
 
 Raportti generoituu _htmlcov_-hakemistoon.
+
+#### Pylint
+
+Pylint-tarkastuksen voi suorittaa komennolla:
+
+```bash
+poetry run invoke lint
+```
+
+#### Formatointi
+
+Koodin formatointia voi parantaa komennolla:
+
+```bash
+poetry run invoke format
+```
