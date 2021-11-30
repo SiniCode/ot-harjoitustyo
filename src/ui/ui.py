@@ -160,6 +160,7 @@ class UI:
 
         elif op == 3:
             print("Bye bye!")
+            exit()
 
         else:
             self.main()
