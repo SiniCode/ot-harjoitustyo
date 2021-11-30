@@ -65,11 +65,12 @@ class RecipeRepository:
 
         return recipes
 
-    def find_ingredients_by_recipe(self, recipe):
+    def find_ingredients_by_recipe(self, recipe, user):
         """Luokan metodi, joka etsii annettuun reseptiin tarvittavat raaka-aineet ja niiden määrän.
 
         Args:
             recipe: merkkijono, joka kertoo haettavan reseptin nimen
+            user: User-olio, joka kertoo, kenen tallentamia reseptejä tarkastellaan (eri käyttäjillä voi olla samannimisiä reseptejä)
 
         Returns:
             lista tupleja, jotka ilmoittavat reseptiin tarvittavat ainekset ja niiden määrän
@@ -77,11 +78,14 @@ class RecipeRepository:
 
         cursor = self._connection.cursor()
 
+        user_id = cursor.execute(
+            "SELECT id FROM Users WHERE username=?", [user.username]).fetchone()[0]
+
         recipe_id = cursor.execute(
             "SELECT id FROM Recipes WHERE name=?", [recipe]).fetchone()[0]
 
         ingredients = cursor.execute(
-            "SELECT name, amount FROM Ingredients WHERE recipe_id=?", [recipe_id]).fetchall()
+            "SELECT I.name, I.amount FROM Ingredients I, Recipes R, Users U WHERE R_id = I.recipe_id AND R.user_id = U.id AND R.id=? AND U.id=?", (recipe_id, user_id)).fetchall()
 
         return ingredients
 
