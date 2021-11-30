@@ -38,3 +38,20 @@ class Recipe:
             if ing[0] == ingredient:
                 self.ingredients.remove(ing)
                 break
+
+    def change_amount(self, ingredient, amount):
+        """Luokan metodi, joka muuttaa jo tallennetun aineksen määrän.
+        Jos ainesta ei löydy reseptistä, se lisätään.
+
+        Args:
+            ingredient: merkkijono, joka kertoo, minkä aineksen määrä halutaan muuttaa
+            amount: merkkijono, joka ilmoittaa korjatun määrän
+        """
+
+        for ing in self.ingredients:
+            if ing[0] == ingredient:
+            ing[1] = amount
+            break
+
+            if ing == self.ingredients[-1]:
+                self.add_ingredient(ingredient, amount)
