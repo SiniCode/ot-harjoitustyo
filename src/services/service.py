@@ -6,7 +6,7 @@ from repositories.user_repository import (
 )
 
 from repositories.recipe_repository import (
-    recipe_repocitory as default_recipe_repository
+    recipe_repository as default_recipe_repository
 )
 
 

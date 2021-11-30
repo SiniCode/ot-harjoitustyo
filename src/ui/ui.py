@@ -14,6 +14,7 @@ class UI:
         print("Options")
         print("1: log in")
         print("2: create new user")
+        print("3: exit")
 
     def logged_in_options(self):
         """Luokan metodi, joka tulostaa kirjautuneen käyttäjän vaihtoehdot."""
@@ -25,45 +26,39 @@ class UI:
         print("4: log out")
 
     def login(self):
-        """Luokan metodi, joka kirjaa käyttäjän sisään.
-
-        Returns:
-            Palauttaa True, jos kirjautuminen onnistuu, ja False, jos käyttäjä keskeyttää kirjautumisen
-        """
+        """Luokan metodi, joka kirjaa käyttäjän sisään."""
 
         while True:
             confirm = input("Do you want to log in? (y/n): ")
             if confirm == "n":
-                return False
+                self.main()
             username = input("Username: ")
             password = input("Password: ")
 
             try:
                 service.login(username, password)
                 print(f'Welcome, {username}!')
-                return True
+                self.logged_in_main()
+
             except InvalidCredentialsError:
                 print("Invalid username or password")
                 continue
 
     def create_user(self):
-        """Luokan metodi, jonka avulla luodaan uusi käyttäjä ja asetetaan sille salasana.
-
-        Returns:
-            Palauttaa True, jos käyttäjän luominen onnistuu, ja False, jos käyttäjä keskeyttää luomisen
-        """
+        """Luokan metodi, jonka avulla luodaan uusi käyttäjä ja asetetaan sille salasana."""
 
         while True:
             confirm = input("Do you want to create a new user? (y/n) ")
             if confirm == "n":
-                return False
+                self.main()
             username = input("Username (3-15 characters): ")
             password = input("Password (3-15 characters): ")
 
             try:
                 service.create_user(username, password)
                 print(f'Welcome, {username}!')
-                return True
+                self.logged_in_main()
+
             except UsernameExistsError:
                 print(f'Username {username} is already in use')
                 continue
@@ -139,6 +134,9 @@ class UI:
 
         elif int(option) == 2:
             self.create_user()
+
+        elif int(option) == 3:
+            print("Bye bye!")
 
         else:
             self.main()

@@ -6,44 +6,44 @@ class RecipeRepository:
     """Luokka, joka vastaa resepteihin liittyvistä tietokantaoperaatioista."""
 
     def __init__(self, connection):
-    """Luokan konstruktori.
+        """Luokan konstruktori.
 
-    Args:
-        connection: Connection-olio, joka kuvaa tietokantayhteyttä
-    """
+        Args:
+            connection: Connection-olio, joka kuvaa tietokantayhteyttä
+        """
 
-    self._connection = connection
+        self._connection = connection
 
 
     def add_recipe(self, recipe, user):
-    """Tallentaa uuden reseptin tietokantaan.
+        """Tallentaa uuden reseptin tietokantaan.
 
-    Args:
-        recipe: Recipe-olio, joka kuvaa tallennetaavaa reseptiä
-        user: User-olio, joka kuvaa kirjautuneena olevaa käyttäjää
+        Args:
+            recipe: Recipe-olio, joka kuvaa tallennetaavaa reseptiä
+            user: User-olio, joka kuvaa kirjautuneena olevaa käyttäjää
 
-    Returns:
-        Recipe-olio, joka kuvaa tallennettua reseptiä
-    """
+        Returns:
+            Recipe-olio, joka kuvaa tallennettua reseptiä
+        """
 
-    cursor = self._connection.cursor()
+        cursor = self._connection.cursor()
 
-    user_id = cursor.execute(
-        "SELECT id FROM Users WHERE username=?", [user.username]).fetchone()[0]
+        user_id = cursor.execute(
+            "SELECT id FROM Users WHERE username=?", [user.username]).fetchone()[0]
 
-    cursor.execute(
-        "INSERT INTO Recipes (name, user_id) VALUES (recipe.name, user_id)")
-
-    recipe_id = cursor.execute(
-        "SELECT id FROM Recipes WHERE name=?", [recipe.name]).fetchone()[0]
-
-    for ing in recipe.ingredients:
         cursor.execute(
-            "INSERT INTO Ingredients (name, amount, recipe_id) VALUES (ing[0], ing[1], recipe_id)")
+            "INSERT INTO Recipes (name, user_id) VALUES (recipe.name, user_id)")
 
-    self._connection.commit()
+        recipe_id = cursor.execute(
+            "SELECT id FROM Recipes WHERE name=?", [recipe.name]).fetchone()[0]
 
-    return recipe
+        for ing in recipe.ingredients:
+            cursor.execute(
+                "INSERT INTO Ingredients (name, amount, recipe_id) VALUES (ing[0], ing[1], recipe_id)")
+
+        self._connection.commit()
+
+        return recipe
 
     def find_recipes_by_user(self, user):
         """Luokan metodi, joka etsii kaikkien käyttäjän tallentamien reseptien nimet.

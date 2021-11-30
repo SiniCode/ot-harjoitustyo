@@ -50,7 +50,7 @@ class Recipe:
 
         for ing in self.ingredients:
             if ing[0] == ingredient:
-            ing[1] = amount
+                ing[1] = amount
             break
 
             if ing == self.ingredients[-1]:
