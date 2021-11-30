@@ -5,3 +5,6 @@
 | 15.11.2021 | 1         | markdownin opiskelua, työaikakirjanpidon luominen |
 | 16.11.2021 | 1         | vaatimusmäärittely, READMEn päivitys |
 | 23.11.2021 | 8         | ensimmäiset toiminnallisuudet ja testit toteutettu |
+| 30.11.2021 | 3         | uudet toiminnallisuudet alustettu, pylint- ja formatointitehtävät lisätty |
+| 30.11.2021 | 6         | uudet toiminnallisuudet käyttöliittymään, uusia testejä, ongelmien ratkomista |
+| **Yht.**   | 19        |           |
