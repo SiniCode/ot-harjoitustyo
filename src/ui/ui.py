@@ -32,16 +32,21 @@ class UI:
             confirm = input("Do you want to log in? (y/n): ")
             if confirm == "n":
                 self.main()
-            username = input("Username: ")
-            password = input("Password: ")
 
-            try:
-                service.login(username, password)
-                print(f'Welcome, {username}!')
-                self.logged_in_main()
+            elif confirm == "y":
+                username = input("Username: ")
+                password = input("Password: ")
 
-            except InvalidCredentialsError:
-                print("Invalid username or password")
+                try:
+                    service.login(username, password)
+                    print(f'Welcome, {username}!')
+                    self.logged_in_main()
+
+                except InvalidCredentialsError:
+                    print("Invalid username or password")
+                    continue
+
+            else:
                 continue
 
     def create_user(self):
@@ -51,22 +56,27 @@ class UI:
             confirm = input("Do you want to create a new user? (y/n) ")
             if confirm == "n":
                 self.main()
-            username = input("Username (3-15 characters): ")
-            password = input("Password (3-15 characters): ")
 
-            try:
-                service.create_user(username, password)
-                print(f'Welcome, {username}!')
-                self.logged_in_main()
+            elif confirm == "y":
+                username = input("Username (3-15 characters): ")
+                password = input("Password (3-15 characters): ")
 
-            except UsernameExistsError:
-                print(f'Username {username} is already in use')
-                continue
-            except UsernameNotValidError:
-                print("Invalid username")
-                continue
-            except PasswordNotValidError:
-                print("Invalid password")
+                try:
+                    service.create_user(username, password)
+                    print(f'Welcome, {username}!')
+                    self.logged_in_main()
+
+                except UsernameExistsError:
+                    print(f'Username {username} is already in use')
+                    continue
+                except UsernameNotValidError:
+                    print("Invalid username")
+                    continue
+                except PasswordNotValidError:
+                    print("Invalid password")
+                    continue
+
+            else:
                 continue
 
     def add_recipe(self):
@@ -80,9 +90,13 @@ class UI:
             if confirm == "n":
                 break
 
-            ingredient = input("Ingredient: ")
-            amount = input("Amount: ")
-            ingredients.append((ingredient, amount))
+            elif confirm == "y":
+                ingredient = input("Ingredient: ")
+                amount = input("Amount: ")
+                ingredients.append((ingredient, amount))
+
+            else:
+                continue
 
         service.add_recipe(name, ingredients)
 
@@ -116,26 +130,35 @@ class UI:
     def logout(self):
         """Luokan metodi, jonka avulla käyttäjä voi kirjautua ulos."""
 
-        confirmation = input("Do you want to log out? (y/n) ")
-        if confirmation == "n":
-            self.logged_in_main()
+        while True:
+            confirmation = input("Do you want to log out? (y/n) ")
+            if confirmation == "n":
+                self.logged_in_main()
 
-        else:
-            service.logout()
-            self.main()
+            elif confirmation == "y":
+                service.logout()
+                self.main()
+
+            else:
+                continue
 
     def main(self):
         self.options()
 
         option = input("Choose option: ")
 
-        if int(option) == 1:
+        try:
+            op = int(option)
+        except ValueError:
+            self.main()
+
+        if op == 1:
             self.login()
 
-        elif int(option) == 2:
+        elif op == 2:
             self.create_user()
 
-        elif int(option) == 3:
+        elif op == 3:
             print("Bye bye!")
 
         else:
@@ -146,16 +169,22 @@ class UI:
 
         option = input("Choose option: ")
 
-        if int(option) == 1:
+        try:
+            op = int(option)
+        except ValueError:
+            self.logged_in_main()
+
+
+        if op == 1:
             self.add_recipe()
 
-        elif int(option) == 2:
+        elif op == 2:
             self.find_all_recipes()
 
-        elif int(option) == 3:
+        elif op == 3:
             self.find_ingredients()
 
-        elif int(option) == 4:
+        elif op == 4:
             self.logout()
 
         else:

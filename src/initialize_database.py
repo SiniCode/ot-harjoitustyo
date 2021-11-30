@@ -8,6 +8,14 @@ def drop_tables(connection):
         drop table if exists Users;
     ''')
 
+    cursor.execute('''
+        drop table if exists Recipes;
+    ''')
+
+    cursor.execute('''
+        drop table if exists Ingredients;
+    ''')
+
     connection.commit()
 
 
@@ -24,7 +32,7 @@ def create_tables(connection):
     cursor.execute('''
         CREATE TABLE Recipes (
             id INTEGER PRIMARY KEY,
-            name TEXT
+            name TEXT,
             user_id INTEGER);
     ''')
 

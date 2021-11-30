@@ -2,6 +2,10 @@ from entities.recipe import Recipe
 from entities.user import User
 from database_connection import get_db_connection
 
+def get_id_by_row(row):
+    return row['id'] if row else None
+
+
 class RecipeRepository:
     """Luokka, joka vastaa resepteihin liittyvistä tietokantaoperaatioista."""
 
@@ -28,18 +32,21 @@ class RecipeRepository:
 
         cursor = self._connection.cursor()
 
-        user_id = cursor.execute(
-            "SELECT id FROM Users WHERE username=?", [user.username]).fetchone()[0]
+        row = cursor.execute(
+            "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
+        user_id = get_id_by_row(row)
 
         cursor.execute(
-            "INSERT INTO Recipes (name, user_id) VALUES (recipe.name, user_id)")
+            "INSERT INTO Recipes (name, user_id) VALUES (?, ?)", [recipe.name, user_id])
 
-        recipe_id = cursor.execute(
-            "SELECT id FROM Recipes WHERE name=?", [recipe.name]).fetchone()[0]
+        row = cursor.execute(
+            "SELECT * FROM Recipes WHERE name=?", [recipe.name]).fetchone()
+        recipe_id = get_id_by_row(row)
 
-        for ing in recipe.ingredients:
+
+        for (name, amount) in recipe.ingredients:
             cursor.execute(
-                "INSERT INTO Ingredients (name, amount, recipe_id) VALUES (ing[0], ing[1], recipe_id)")
+                "INSERT INTO Ingredients (name, amount, recipe_id) VALUES (?, ?, ?)", [name, amount, recipe_id])
 
         self._connection.commit()
 
@@ -57,8 +64,10 @@ class RecipeRepository:
 
         cursor = self._connection.cursor()
 
-        user_id = cursor.execute(
-            "SELECT id FROM Users WHERE username=?", [user.username]).fetchone()[0]
+        row = cursor.execute(
+            "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
+        user_id = get_id_by_row(row)
+
 
         recipes = cursor.execute(
             "SELECT name FROM Recipes WHERE user_id=?", [user_id]).fetchall()
@@ -78,14 +87,16 @@ class RecipeRepository:
 
         cursor = self._connection.cursor()
 
-        user_id = cursor.execute(
-            "SELECT id FROM Users WHERE username=?", [user.username]).fetchone()[0]
+        row = cursor.execute(
+            "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
+        user_id = get_id_by_row(row)
 
-        recipe_id = cursor.execute(
-            "SELECT id FROM Recipes WHERE name=?", [recipe]).fetchone()[0]
+        row = cursor.execute(
+            "SELECT * FROM Recipes WHERE name=?", [recipe]).fetchone()
+        recipe_id = get_id_by_row(row)
 
         ingredients = cursor.execute(
-            "SELECT I.name, I.amount FROM Ingredients I, Recipes R, Users U WHERE R_id = I.recipe_id AND R.user_id = U.id AND R.id=? AND U.id=?", (recipe_id, user_id)).fetchall()
+            "SELECT I.name, I.amount FROM Ingredients I, Recipes R, Users U WHERE R.id = I.recipe_id AND R.user_id = U.id AND R.id=? AND U.id=?", (recipe_id, user_id)).fetchall()
 
         return ingredients
 
