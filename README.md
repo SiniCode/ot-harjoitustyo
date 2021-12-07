@@ -7,6 +7,7 @@ Jokaisella käyttäjällä on sovellukseen oma käyttäjätunnus ja salasana.
 
 ### Dokumentaatio
 * [Vaatimusmäärittely](https://github.com/SiniCode/ot-harjoitustyo/blob/main/dokumentaatio/vaatimusmaarittely.md)
+* [Sovellusarkkitehtuuri](https://github.com/SiniCode/ot-harjoitustyo/blob/main/dokumentaatio/arkkitehtuuri.md)
 * [Työaikakirjanpito](https://github.com/SiniCode/ot-harjoitustyo/blob/main/dokumentaatio/tyoaikaseuranta.md)
 
 ### Asennus
