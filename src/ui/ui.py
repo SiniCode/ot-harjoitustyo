@@ -177,23 +177,23 @@ class UI:
            option = input("What would you like to do? ")
 
            try:
-                op = int(option)
-            except ValueError:
-                continue
+               op = int(option)
+           except ValueError:
+               continue
 
-            print()
+           print()
 
-            if op == 1:
-                self.find_all_recipes()
+           if op == 1:
+               self.find_all_recipes()
 
-            elif op == 2:
-                self.find_recipes_by_ingredient()
+           elif op == 2:
+               self.find_recipes_by_ingredient()
 
-            elif op == 3:
+           elif op == 3:
                 self.find_ingredients()
 
-            else:
-                continue
+           else:
+               continue
 
 
     def rename_recipe(self, recipe):
