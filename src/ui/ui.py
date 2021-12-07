@@ -1,5 +1,5 @@
 from services.service import service, UsernameExistsError, UsernameNotValidError, PasswordNotValidError, InvalidCredentialsError
-
+import random
 
 class UI:
     """Luokka, joka tarjoaa käyttöliittymän sovellukseen."""
@@ -27,7 +27,8 @@ class UI:
         print("  2: Look for recipes")
         print("  3: Update recipe")
         print("  4: Delete recipe")
-        print("  5: Log out")
+        print("  5: Create a menu")
+        print("  6: Log out")
         print()
 
     def login(self):
@@ -267,6 +268,12 @@ class UI:
 
         recipe = input("Which recipe would you like to update? ")
 
+        users_recipes = self.find_all_recipes()
+        if recipe not in users_recipes:
+            print()
+            print("Recipe not found")
+            self.logged_in_main()
+
         while True:
             print()
             print("Options: ")
@@ -305,6 +312,32 @@ class UI:
         service.delete_recipe(recipe)
         print()
         print(f"Recipe {recipe} deleted!")
+
+        self.logged_in_main()
+
+    def create_menu(self):
+        """Luokan metodi, jonka avulla käyttäjä voi luoda valitsemansa mittaisen ruokalistan."""
+
+        days = input("How many days would you like the menu to cover? ")
+        print()
+
+        menu = []
+        recipes = self.find_all_recipes()
+
+        if recipes == []:
+            print("Please, add some recipes first.")
+            self.logged_in_main()
+
+        random.shuffle(recipes)
+
+        while len(menu) < days:
+            menu += recipes
+
+        print(f"Menu suggestion for {days} days:")
+        print()
+
+        for d in range(days):
+            print(menu[d])
 
         self.logged_in_main()
 
@@ -376,6 +409,9 @@ class UI:
             self.delete_recipe()
 
         elif op == 5:
+            self.create_menu()
+
+        elif op == 6:
             self.logout()
 
         else:
