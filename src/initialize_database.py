@@ -33,14 +33,14 @@ def create_tables(connection):
         CREATE TABLE Recipes (
             id INTEGER PRIMARY KEY,
             name TEXT,
-            user_id INTEGER);
+            user_id INTEGER REFERENCES Users);
     ''')
 
     cursor.execute('''
         CREATE TABLE Ingredients (
             name TEXT,
             amount TEXT,
-            recipe_id INTEGER);
+            recipe_id INTEGER REFERENCES Recipes);
     ''')
 
     connection.commit()
