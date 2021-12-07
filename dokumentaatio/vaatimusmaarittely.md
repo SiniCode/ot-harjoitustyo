@@ -24,17 +24,17 @@ Jokaisella käyttäjällä on sovellukseen oma käyttäjätunnus ja salasana.
 
 - käyttäjä voi hakea kaikkien tallentamiensa reseptien nimet (tehty)
 
-- käyttäjä voi hakea tallentamiaan reseptejä nimen tai raaka-aineen perusteella (haku nimen perusteella tehty)
+- käyttäjä voi hakea tallentamiaan reseptejä nimen tai raaka-aineen perusteella (tehty)
 
-- käyttäjä voi poistaa tallentamansa reseptin
+- käyttäjä voi poistaa tallentamansa reseptin (tehty)
 
 - käyttäjä voi kirjautua ulos järjestelmästä (tehty)
 
 ## Jatkokehitysideoita
 
-- käyttäjä voi muokata tallentamaansa reseptiä
+- käyttäjä voi muokata tallentamaansa reseptiä (tehty)
 
-- käyttäjä voi pyytää sovellusta luomaan haluamansa mittaisen ruokalistan, jolloin sovellus arpoo tallennettujen reseptien joukosta pyydetyn määrän reseptejä
+- käyttäjä voi pyytää sovellusta luomaan haluamansa mittaisen ruokalistan, jolloin sovellus arpoo tallennettujen reseptien joukosta pyydetyn määrän reseptejä    (tehty)
   - jos ruokalistan pituus on suurempi kuin tallennettujen reseptien määrä, sama resepti voi tulla ruokalistalle useamman kerran
 
 - käyttäjä voi pyytää sovellusta laskemaan luodun ruokalistan valmistamiseen vaadittavien raaka-aineiden yhteismäärät
