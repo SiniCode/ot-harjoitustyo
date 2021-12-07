@@ -10,6 +10,9 @@ Jokaisella käyttäjällä on sovellukseen oma käyttäjätunnus ja salasana.
 * [Sovellusarkkitehtuuri](https://github.com/SiniCode/ot-harjoitustyo/blob/main/dokumentaatio/arkkitehtuuri.md)
 * [Työaikakirjanpito](https://github.com/SiniCode/ot-harjoitustyo/blob/main/dokumentaatio/tyoaikaseuranta.md)
 
+### Releaset
+* [Viikko 5](https://github.com/SiniCode/ot-harjoitustyo/releases/tag/viikko5)
+
 ### Asennus
 
 1. Asenna riippuvuudet komennolla:
