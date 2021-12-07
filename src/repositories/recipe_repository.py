@@ -73,8 +73,8 @@ class RecipeRepository:
             "SELECT * FROM Recipes WHERE name=? AND user_id=?", (recipe, user_id)).fetchone()
         recipe_id = get_id_by_row(row)
 
-        cursor.execute(DELETE FROM Ingredients WHERE recipe_id=?", [recipe_id])
-        cursor.execute(DELETE FROM Recipes WHERE id=?", [recipe_id])
+        cursor.execute("DELETE FROM Ingredients WHERE recipe_id=?", [recipe_id])
+        cursor.execute("DELETE FROM Recipes WHERE id=?", [recipe_id])
 
         self._connection.commit()
 
