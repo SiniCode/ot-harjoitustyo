@@ -116,6 +116,9 @@ class UI:
 
         service.add_recipe(name, ingredients)
 
+        print()
+        print(f"{name} added to your recipies!")
+
         self.logged_in_main()
 
     def find_all_recipes(self):

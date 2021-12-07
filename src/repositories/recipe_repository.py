@@ -44,7 +44,7 @@ class RecipeRepository:
             "INSERT INTO Recipes (name, user_id) VALUES (?, ?)", [recipe.name, user_id])
 
         row = cursor.execute(
-            "SELECT * FROM Recipes WHERE name=?", [recipe.name]).fetchone()
+            "SELECT * FROM Recipes WHERE name=? AND user_id=?", (recipe.name, user_id)).fetchone()
         recipe_id = get_id_by_row(row)
 
         for (name, amount) in recipe.ingredients:
@@ -154,11 +154,11 @@ class RecipeRepository:
         user_id = get_id_by_row(row)
 
         row = cursor.execute(
-            "SELECT * FROM Recipes WHERE name=?", [recipe]).fetchone()
+            "SELECT * FROM Recipes WHERE name=? AND user_id=?", (recipe, user_id)).fetchone()
         recipe_id = get_id_by_row(row)
 
         ingredients = cursor.execute(
-            "SELECT I.name, I.amount FROM Ingredients I, Recipes R, Users U WHERE R.id = I.recipe_id AND R.user_id = U.id AND R.id=? AND U.id=?", (recipe_id, user_id)).fetchall()
+            "SELECT I.name, I.amount FROM Ingredients I, Recipes R WHERE R.id = I.recipe_id AND R.id=?", [recipe_id]).fetchall()
 
         cursor.close()
 
