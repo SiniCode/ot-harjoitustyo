@@ -128,6 +128,16 @@ class Service:
         self._recipe_repository.add_recipe(recipe, user)
         return recipe
 
+    def delete_recipe(self, recipe_name):
+        """Luokan metodi, joka poistaa reseptin tietokannasta.
+
+        Args:
+            recipe_name: merkkijono, joka kertoo, mikä resepti poistetaan
+        """
+
+        user = self.get_current_user()
+        self._recipe_repository.delete_recipe(recipe_name, user)
+
     def find_recipes(self):
         """Luokan metodi, joka hakee kirjautuneen käyttäjän reseptit tietokannasta.
 
