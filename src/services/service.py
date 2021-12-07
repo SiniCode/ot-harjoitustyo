@@ -150,7 +150,7 @@ class Service:
 
         result = []
         for recipe in recipes:
-            result.append(recipe[0])
+            result.append(recipe)
 
         result.sort()
         return result

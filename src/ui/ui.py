@@ -99,6 +99,7 @@ class UI:
         ingredients = []
 
         while True:
+            print()
             confirm = input(
                 "Would you like to add an ingredient to the recipe? (y/n) ")
             if confirm == "n":
@@ -160,9 +161,9 @@ class UI:
 
             elif confirmation == "y":
                 print()
-                user = self.get_current_user()
+                user = service.get_current_user()
                 service.logout()
-                print(f"Goodbye, {user}!") 
+                print(f"Goodbye!") 
                 self.main()
 
             else:
