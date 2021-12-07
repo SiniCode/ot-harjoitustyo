@@ -134,6 +134,30 @@ class RecipeRepository:
 
         return result
 
+    def change_recipe_name(self, old_name, new_name, user):
+        """Luokan metodi, joka muuttaa reseptin nimen tietokannassa.
+
+        Args:
+            old_name: merkkijono, joka kertoo, minkä reseptin nimi halutaan muuttaa
+            new_name: merkkijono, joka kertoo uuden nimen
+            user = User-olio, joka kertoo, kenen tallentamasta reseptistä on kyse
+        """
+
+        cursor = self._connection.cursor()
+
+        row = cursor.execute(
+            "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
+        user_id = get_id_by_row(row)
+
+        row = cursor.execute(
+            "SELECT * FROM Recipes WHERE name=? AND user_id=?", (old_name, user_id)).fetchone()
+        recipe_id = get_id_by_row(row)
+
+        cursor.execute(
+            "UPDATE Recipes SET name=? WHERE id=?", (new_name, recipe_id))
+
+        self._connection.commit()
+
     def delete_all(self):
         """Luokan metodi, joka poistaa kaikki reseptit ja ainekset."""
 

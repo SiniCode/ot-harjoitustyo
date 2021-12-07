@@ -26,8 +26,9 @@ class UI:
         print("  1: add new recipe")
         print("  2: find all recipes")
         print("  3: find a recipe")
-        print("  4: delete a recipe")
-        print("  5: log out")
+        print("  4: rename a recipe")
+        print("  5: delete a recipe")
+        print("  6: log out")
         print()
 
     def login(self):
@@ -143,6 +144,19 @@ class UI:
 
         self.logged_in_main()
 
+    def rename_recipe(self):
+        """Luokan metodi, jonka avulla käyttäjä voi nimetä tallentamansa reseptin uudelleen."""
+
+        recipe = input("Which recipe would you like to rename? ")
+        print()
+        new_name = input("New name: ")
+        service.change_recipe_name(recipe, new_name)
+        print()
+        print(f"Recipe renamed as {new_name}!")
+
+        self.logged_in_main()
+
+
     def delete_recipe(self):
         recipe = input("Which recipe would you like to delete? ")
         service.delete_recipe(recipe)
@@ -216,9 +230,12 @@ class UI:
             self.find_ingredients()
 
         elif op == 4:
-            self.delete_recipe()
+            self.rename_recipe()
 
         elif op == 5:
+            self.delete_recipe()
+
+        elif op == 6:
             self.logout()
 
         else:

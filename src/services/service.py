@@ -171,5 +171,17 @@ class Service:
 
         return ingredients
 
+    def change_recipe_name(self, old_name, new_name):
+        """Luokan metodi, jonka avulla voi muuttaa reseptin nimeä.
+
+        Args:
+            old_name: merkkijono, joka ilmoittaa, minkä reseptin nimi vaihdetaan
+            new_name: merkkijono, joka ilmoittaa uuden nimen
+        """
+
+        user = self.get_current_user()
+        self._recipe_repository.change_recipe_name(old_name, new_name, user)
+
+
 
 service = Service()
