@@ -278,7 +278,7 @@ class RecipeRepository:
             "SELECT * FROM Recipes WHERE name=? AND user_id=?", (recipe, user_id)).fetchone()
         recipe_id = get_id_by_row(row)
 
-        query = """DELETE FROM Ingredients WHERE ingredient=? AND recipe_id=?"""
+        query = """DELETE FROM Ingredients WHERE name=? AND recipe_id=?"""
         values = (ingredient, recipe_id)
         cursor.execute(query, values)
 
