@@ -52,6 +52,7 @@ class RecipeRepository:
                 "INSERT INTO Ingredients (name, amount, recipe_id) VALUES (?, ?, ?)", [name, amount, recipe_id])
 
         self._connection.commit()
+        cursor.close()
 
         return recipe
 
@@ -77,7 +78,7 @@ class RecipeRepository:
         cursor.execute("DELETE FROM Recipes WHERE id=?", [recipe_id])
 
         self._connection.commit()
-
+        cursor.close()
 
     def find_recipes_by_user(self, user):
         """Luokan metodi, joka etsii kaikkien käyttäjän tallentamien reseptien nimet.
@@ -98,11 +99,42 @@ class RecipeRepository:
         recipes = cursor.execute(
             "SELECT * FROM Recipes WHERE user_id=?", [user_id]).fetchall()
 
+        cursor.close()
+
         result = []
         for row in recipes:
             result.append(get_name_by_row(row))
 
         return result
+
+    def find_recipe_by_ingredient(self, ingredient, user):
+        """Luokan metodi, joka etsii niiden käyttäjän tallentamien reseptien nimet, joissa haettu aines esiintyy.
+
+        Args:
+            ingredient: merkkijono, joka kertoo, minkä aineksen perusteella haku suoritetaan
+            user: User-olio, joka kuvaa käyttäjän, jonka tallentamia reseptejä haetaan
+
+        Returns:
+            lista hakua vastaavien reseptien nimistä
+        """
+
+        cursor = self._connection.cursor()
+
+        row = cursor.execute(
+            "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
+        user_id = get_id_by_row(row)
+
+        recipes = cursor.execute(
+            "SELECT * FROM Recipes R, Ingredients I WHERE R.user_id=? AND R.id = I.recipe_id AND I.name=?", [user_id, ingredient]).fetchall()
+
+        cursor.close()
+
+        result = []
+        for row in recipes:
+            result.append(get_name_by_row(row))
+
+        return result
+
 
     def find_ingredients_by_recipe(self, recipe, user):
         """Luokan metodi, joka etsii annettuun reseptiin tarvittavat raaka-aineet ja niiden määrän.
@@ -127,6 +159,8 @@ class RecipeRepository:
 
         ingredients = cursor.execute(
             "SELECT I.name, I.amount FROM Ingredients I, Recipes R, Users U WHERE R.id = I.recipe_id AND R.user_id = U.id AND R.id=? AND U.id=?", (recipe_id, user_id)).fetchall()
+
+        cursor.close()
 
         result = []
         for (name, amount) in ingredients:
@@ -153,10 +187,92 @@ class RecipeRepository:
             "SELECT * FROM Recipes WHERE name=? AND user_id=?", (old_name, user_id)).fetchone()
         recipe_id = get_id_by_row(row)
 
-        cursor.execute(
-            "UPDATE Recipes SET name=? WHERE id=?", (new_name, recipe_id))
+        query = """UPDATE Recipes SET name=? WHERE id=?"""
+        values = (new_name, recipe_id)
+        cursor.execute(query, values)
 
         self._connection.commit()
+        cursor.close()
+
+    def change_ingredient_amount(self, recipe, ingredient, new_amount, user):
+        """Luokan metodi, joka muuttaa reseptiin tarvittavan ainesosan määrän.
+
+        Args:
+            recipe: merkkijono, joka kertoo, mitä reseptiä halutaan muuttaa
+            ingredient: merkkijono, joka kertoo, minkä aineksen määrä halutaan muuttaa
+            new_amount: merkkijono, joka ilmoittaa uuden määrän
+            user: User-olio, joka kertoo, kenen tallentamaa reseptiä muutetaan
+        """
+
+        cursor = self._connection.cursor()
+
+        row = cursor.execute(
+            "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
+        user_id = get_id_by_row(row)
+
+        row = cursor.execute(
+            "SELECT * FROM Recipes WHERE name=? AND user_id=?", (recipe, user_id)).fetchone()
+        recipe_id = get_id_by_row(row)
+
+        query = """UPDATE Ingredients SET amount=? WHERE name=? AND recipe_id=?"""
+        values = (new_amount, ingredient, recipe_id)
+        cursor.execute(query, values)
+
+        self._connection.commit()
+        cursor.close()
+
+    def insert_an_ingredient(self, recipe, ingredient, amount, user):
+        """Luokan metodi, joka lisää reseptiin uuden aineksen.
+
+        Args:
+            recipe: merkkijono, joka kertoo, mitä reseptiä halutaan muuttaa
+            ingredient: merkkijono, joka kertoo, mikä aines lisätään
+            amount: merkkijono, joka ilmoittaa aineksen määrän
+            user: User-olio, joka kertoo, kenen tallentamaa reseptiä muutetaan
+        """
+
+        cursor = self._connection.cursor()
+
+        row = cursor.execute(
+            "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
+        user_id = get_id_by_row(row)
+
+        row = cursor.execute(
+            "SELECT * FROM Recipes WHERE name=? AND user_id=?", (recipe, user_id)).fetchone()
+        recipe_id = get_id_by_row(row)
+
+        cursor.execute(
+                "INSERT INTO Ingredients (name, amount, recipe_id) VALUES (?, ?, ?)", [ingredient, amount, recipe_id])
+
+        self._connection.commit()
+        cursor.close()
+
+    def delete_an_ingredient(self, recipe, ingredient, user):
+        """Luokan metodi, joka poistaa reseptistä annetun aineksen.
+
+        Args:
+            recipe: merkkijono, joka ilmoittaa, mitä reseptiä halutaan muuttaa
+            ingredient: merkkijono, joka kertoo, mikä aines halutaan poistaa
+            user: User-olio, joka kertoo, kenen tallentamaa reseptiä muokataan
+        """
+
+        cursor = self._connection.cursor()
+
+        row = cursor.execute(
+            "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
+        user_id = get_id_by_row(row)
+
+        row = cursor.execute(
+            "SELECT * FROM Recipes WHERE name=? AND user_id=?", (old_name, user_id)).fetchone()
+        recipe_id = get_id_by_row(row)
+
+        query = """DELETE FROM Ingredients WHERE ingredient=? AND recipe_id=?"""
+        values = (ingredient, recipe_id)
+        cursor.execute(query, values)
+
+        self._connection.commit()
+        cursor.close()
+
 
     def delete_all(self):
         """Luokan metodi, joka poistaa kaikki reseptit ja ainekset."""
@@ -168,6 +284,6 @@ class RecipeRepository:
         cursor.execute("DELETE FROM Ingredients")
 
         self._connection.commit()
-
+        cursor.close()
 
 recipe_repository = RecipeRepository(get_db_connection())
