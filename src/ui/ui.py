@@ -1,6 +1,7 @@
 from services.service import service, UsernameExistsError, UsernameNotValidError, PasswordNotValidError, InvalidCredentialsError
 import random
 
+
 class UI:
     """Luokka, joka tarjoaa käyttöliittymän sovellukseen."""
 
@@ -325,7 +326,8 @@ class UI:
         """Luokan metodi, jonka avulla käyttäjä voi luoda valitsemansa mittaisen ruokalistan."""
 
         try:
-            days = int(input("How many days would you like the menu to cover? "))
+            days = int(
+                input("How many days would you like the menu to cover? "))
         except ValueError:
             print()
             print("Please, give a number")

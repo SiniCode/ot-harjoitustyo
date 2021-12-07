@@ -94,7 +94,8 @@ class TestRecipeRepository(unittest.TestCase):
         user_repository.create_user(self.user_hemmo)
         recipe_repository.add_recipe(self.recipe_puuro, self.user_hemmo)
         recipe_repository.add_recipe(self.recipe_keksit, self.user_hemmo)
-        recipe_repository.change_recipe_name('puuro', 'koiran puuro', self.user_hemmo)
+        recipe_repository.change_recipe_name(
+            'puuro', 'koiran puuro', self.user_hemmo)
 
         self.assertEqual(recipe_repository.find_recipes_by_user(
             self.user_hemmo), ['koiran puuro', 'keksit'])
@@ -105,23 +106,26 @@ class TestRecipeRepository(unittest.TestCase):
         recipe_repository.change_ingredient_amount(
             'puuro', 'jauheliha', '800 g', self.user_hemmo)
 
-        ingredients = recipe_repository.find_ingredients_by_recipe('puuro', self.user_hemmo)
+        ingredients = recipe_repository.find_ingredients_by_recipe(
+            'puuro', self.user_hemmo)
         self.assertEqual(ingredients[-1], ('jauheliha', '800 g'))
 
     def test_insert_an_ingredient(self):
         user_repository.create_user(self.user_hemmo)
         recipe_repository.add_recipe(self.recipe_puuro, self.user_hemmo)
-        recipe_repository.insert_an_ingredient('puuro', 'öljy', '1 rkl', self.user_hemmo)
+        recipe_repository.insert_an_ingredient(
+            'puuro', 'öljy', '1 rkl', self.user_hemmo)
 
-        ingredients = recipe_repository.find_ingredients_by_recipe('puuro', self.user_hemmo)
+        ingredients = recipe_repository.find_ingredients_by_recipe(
+            'puuro', self.user_hemmo)
         self.assertEqual(ingredients[-1], ('öljy', '1 rkl'))
 
     def test_delete_an_ingredient(self):
         user_repository.create_user(self.user_hemmo)
         recipe_repository.add_recipe(self.recipe_puuro, self.user_hemmo)
-        recipe_repository.delete_an_ingredient('puuro', 'jauheliha', self.user_hemmo)
+        recipe_repository.delete_an_ingredient(
+            'puuro', 'jauheliha', self.user_hemmo)
 
-        ingredients = recipe_repository.find_ingredients_by_recipe('puuro', self.user_hemmo)
+        ingredients = recipe_repository.find_ingredients_by_recipe(
+            'puuro', self.user_hemmo)
         self.assertEqual(ingredients[-1], ('vesi', '3 l'))
-
-

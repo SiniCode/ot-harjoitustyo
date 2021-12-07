@@ -31,7 +31,7 @@ class UserRepository:
         cursor = self._connection.cursor()
 
         cursor.execute('INSERT INTO Users (username, password) values (?, ?)',
-                        [user.username, user.password])
+                       [user.username, user.password])
 
         self._connection.commit()
 
