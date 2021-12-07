@@ -11,19 +11,24 @@ class UI:
     def options(self):
         """Luokan metodi, joka tulostaa aluksi käyttäjän vaihtoehdot."""
 
+        print()
         print("Options")
-        print("1: log in")
-        print("2: create new user")
-        print("3: exit")
+        print("  1: log in")
+        print("  2: create new user")
+        print("  3: exit")
+        print()
 
     def logged_in_options(self):
         """Luokan metodi, joka tulostaa kirjautuneen käyttäjän vaihtoehdot."""
 
+        print()
         print("Options")
-        print("1: add new recipe")
-        print("2: find all recipes")
-        print("3: find a recipe")
-        print("4: log out")
+        print("  1: add new recipe")
+        print("  2: find all recipes")
+        print("  3: find a recipe")
+        print("  4: delete a recipe")
+        print("  5: log out")
+        print()
 
     def login(self):
         """Luokan metodi, joka kirjaa käyttäjän sisään."""
@@ -34,15 +39,18 @@ class UI:
                 self.main()
 
             elif confirm == "y":
+                print()
                 username = input("Username: ")
                 password = input("Password: ")
 
                 try:
                     service.login(username, password)
+                    print()
                     print(f'Welcome, {username}!')
                     self.logged_in_main()
 
                 except InvalidCredentialsError:
+                    print()
                     print("Invalid username or password")
                     continue
 
@@ -58,21 +66,26 @@ class UI:
                 self.main()
 
             elif confirm == "y":
+                print()
                 username = input("Username (3-15 characters): ")
                 password = input("Password (3-15 characters): ")
 
                 try:
                     service.create_user(username, password)
+                    print()
                     print(f'Welcome, {username}!')
                     self.logged_in_main()
 
                 except UsernameExistsError:
+                    print()
                     print(f'Username {username} is already in use')
                     continue
                 except UsernameNotValidError:
+                    print()
                     print("Invalid username")
                     continue
                 except PasswordNotValidError:
+                    print()
                     print("Invalid password")
                     continue
 
@@ -92,6 +105,7 @@ class UI:
                 break
 
             elif confirm == "y":
+                print()
                 ingredient = input("Ingredient: ")
                 amount = input("Amount: ")
                 ingredients.append((ingredient, amount))
@@ -109,7 +123,7 @@ class UI:
         recipes = service.find_recipes()
 
         print("Saved recipes:")
-
+        print()
         for r in recipes:
             print(r)
 
@@ -120,11 +134,19 @@ class UI:
 
         name = input("Which recipe would you like to see? ")
         ingredients = service.find_ingredients(name)
-
+        print()
         print(f"The ingredients of {name}:")
-
+        print()
         for i in ingredients:
-            print(f"{i[0]:50} {i[1]}")
+            print(f"{i[0]:40} {i[1]}")
+
+        self.logged_in_main()
+
+    def delete_recipe(self):
+        recipe = input("Which recipe would you like to delete? ")
+        service.delete_recipe(recipe)
+        print()
+        print(f"Recipe {recipe} deleted!")
 
         self.logged_in_main()
 
@@ -137,7 +159,10 @@ class UI:
                 self.logged_in_main()
 
             elif confirmation == "y":
+                print()
+                user = self.get_current_user()
                 service.logout()
+                print(f"Goodbye, {user}!") 
                 self.main()
 
             else:
@@ -153,6 +178,8 @@ class UI:
         except ValueError:
             self.main()
 
+        print()
+
         if op == 1:
             self.login()
 
@@ -160,7 +187,7 @@ class UI:
             self.create_user()
 
         elif op == 3:
-            print("Bye bye!")
+            print("Have a delicious day!")
             exit()
 
         else:
@@ -176,6 +203,8 @@ class UI:
         except ValueError:
             self.logged_in_main()
 
+        print()
+
         if op == 1:
             self.add_recipe()
 
@@ -186,6 +215,9 @@ class UI:
             self.find_ingredients()
 
         elif op == 4:
+            self.delete_recipe()
+
+        elif op == 5:
             self.logout()
 
         else:
