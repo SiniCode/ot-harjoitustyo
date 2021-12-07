@@ -155,6 +155,27 @@ class Service:
         result.sort()
         return result
 
+    def find_recipes_by_ingredient(self, ingredient):
+        """Luokan metodi, joka hakee kirjautuneen käyttäjän resepteistä ne, joissa annettu ainesosa esiintyy.
+
+        Args:
+            ingredient: merkkijono, joka kertoo, minkä ainesosan perusteella haku tehdään
+
+        Returns:
+            lista hakua vastaavien reseptien nimistä aakkosjärjestyksessä
+        """
+
+        user = self.get_current_user()
+        recipes = self._recipe_repository.find_recipe_by_ingredient(ingredient, user)
+
+        result = []
+        for recipe in recipes:
+            result.append(recipe)
+
+        result.sort()
+        return result
+
+
     def find_ingredients(self, recipe):
         """Luokan metodi, joka hakee pyydettyyn reseptiin tarvittavat raaka-aineet.
 
@@ -182,6 +203,39 @@ class Service:
         user = self.get_current_user()
         self._recipe_repository.change_recipe_name(old_name, new_name, user)
 
+    def change_ingredient_amount(self, recipe, ingredient, new_amount):
+        """Luokan metodi, joka muuttaa reseptiin tarvittavan ainesosan määrän.
 
+        Args:
+            recipe: merkkijono, joka kertoo, mitä reseptiä halutaan muuttaa
+            ingredient: merkkijono, joka kertoo, minkä aineksen määrä halutaan muuttaa
+            new_amount: merkkijono, joka ilmoittaa uuden määrän
+        """
+
+        user = self.get_current_user()
+        self._recipe_repository.change_ingredient_amount(recipe, ingredient, new_amount, user)
+
+    def insert_an_ingredient(self, recipe, ingredient, amount):
+        """Luokan metodi, joka lisää reseptiin uuden aineksen.
+
+        Args:
+            recipe: merkkijono, joka kertoo, mitä reseptiä halutaan muuttaa
+            ingredient: merkkijono, joka kertoo, mikä aines lisätään
+            amount: merkkijono, joka ilmoittaa aineksen määrän
+        """
+
+        user = self.get_current_user()
+        self._recipe_repository.insert_an_ingredient(recipe, ingredient, amount, user)
+
+    def delete_an_ingredient(self, recipe, ingredient):
+        """Luokan metodi, joka poistaa reseptistä annetun aineksen.
+
+        Args:
+            recipe: merkkijono, joka ilmoittaa, mitä reseptiä halutaan muuttaa
+            ingredient: merkkijono, joka kertoo, mikä aines halutaan poistaa
+        """
+
+        user = self.get_current_user()
+        self._recipe_repository.delete_an_ingredient(recipe, ingredient, user)
 
 service = Service()
