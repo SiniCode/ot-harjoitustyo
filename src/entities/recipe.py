@@ -3,7 +3,8 @@ class Recipe:
 
     Attributes:
         name: merkkijono, joka nimeää reseptin
-        ingredients: lista tupleja, jotka ilmoittavat reseptiin tarvittavat ainekset ja niiden määrän
+        ingredients: lista tupleja, jotka ilmoittavat
+                     reseptiin tarvittavat ainekset ja niiden määrän
     """
 
     def __init__(self, name, ingredients=[]):
@@ -11,7 +12,8 @@ class Recipe:
 
         Args:
             name: merkkijono, joka nimeää reseptin
-            ingredients: lista tupleja, jotka ilmoittavat reseptiin tarvittavat ainekset ja niiden määrän
+            ingredients: lista tupleja, jotka ilmoittavat
+                         reseptiin tarvittavat ainekset ja niiden määrän
         """
 
         self.name = name
@@ -51,7 +53,7 @@ class Recipe:
         for ing in self.ingredients:
             if ing[0] == ingredient:
                 ing[1] = amount
-            break
+                break
 
             if ing == self.ingredients[-1]:
                 self.add_ingredient(ingredient, amount)

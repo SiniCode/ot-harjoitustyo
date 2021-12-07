@@ -30,15 +30,16 @@ class UserRepository:
 
         cursor = self._connection.cursor()
 
-        cursor.execute('INSERT INTO Users (username, password) values (?, ?)', [
-                       user.username, user.password])
+        cursor.execute('INSERT INTO Users (username, password) values (?, ?)',
+                        [user.username, user.password])
 
         self._connection.commit()
 
         return user
 
     def find_by_username(self, username):
-        """Palauttaa käyttäjän käyttäjätunnuksen perusteella, jos käyttäjä on tallennettu tietokantaan.
+        """Palauttaa käyttäjän käyttäjätunnuksen perusteella,
+           jos käyttäjä on tallennettu tietokantaan.
 
         Args:
             username: Merkkijono, joka kuvaa haettavan käyttäjän käyttäjätunnusta

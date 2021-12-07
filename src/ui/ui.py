@@ -133,7 +133,6 @@ class UI:
 
         self.logged_in_main()
 
-
     def find_recipes_by_ingredient(self):
         """Luokan metodi, joka tulostaa aakkosjärjestyksessä niiden käyttäjän tallentamien reseptien nimet, joissa annettu aines esiintyy."""
 
@@ -148,7 +147,6 @@ class UI:
             print(r)
 
         self.logged_in_main()
-
 
     def find_ingredients(self):
         """Luokan metodi, joka tulostaa annetun reseptin ainekset ja niiden määrät tallennusjärjestyksessä."""
@@ -170,34 +168,33 @@ class UI:
         """Luokan metodi, jonka avulla käyttäjä voi tehdä hakuja tietokannasta"""
 
         while True:
-           print()
-           print("Options:")
-           print("  1: Find all recipes")
-           print("  2: Search recipes by ingredient")
-           print("  3: Find the ingredients of a recipe")
-           print()
+            print()
+            print("Options:")
+            print("  1: Find all recipes")
+            print("  2: Search recipes by ingredient")
+            print("  3: Find the ingredients of a recipe")
+            print()
 
-           option = input("What would you like to do? ")
+            option = input("What would you like to do? ")
 
-           try:
-               op = int(option)
-           except ValueError:
-               continue
+            try:
+                op = int(option)
+            except ValueError:
+                continue
 
-           print()
+            print()
 
-           if op == 1:
-               self.find_all_recipes()
+            if op == 1:
+                self.find_all_recipes()
 
-           elif op == 2:
-               self.find_recipes_by_ingredient()
+            elif op == 2:
+                self.find_recipes_by_ingredient()
 
-           elif op == 3:
+            elif op == 3:
                 self.find_ingredients()
 
-           else:
-               continue
-
+            else:
+                continue
 
     def rename_recipe(self, recipe):
         """Luokan metodi, jonka avulla käyttäjä voi nimetä tallentamansa reseptin uudelleen.
@@ -265,8 +262,6 @@ class UI:
 
         self.logged_in_main()
 
-
-
     def update_recipe(self):
         """Luokan metodi, jonka avulla käyttäjä voi muuttaa tallentamiaan reseptejä."""
 
@@ -325,7 +320,7 @@ class UI:
                 print()
                 user = service.get_current_user()
                 service.logout()
-                print(f"Goodbye!") 
+                print(f"Goodbye!")
                 self.main()
 
             else:

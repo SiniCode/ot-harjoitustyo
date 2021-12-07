@@ -2,11 +2,11 @@ from entities.user import User
 from entities.recipe import Recipe
 
 from repositories.user_repository import (
-    user_repository as default_user_repository
+    user_repository as default_user_repo
 )
 
 from repositories.recipe_repository import (
-    recipe_repository as default_recipe_repository
+    recipe_repository as default_recipe_repo
 )
 
 
@@ -29,7 +29,7 @@ class InvalidCredentialsError(Exception):
 class Service:
     """Luokka, joka vastaa sovelluslogiikasta."""
 
-    def __init__(self, user_repository=default_user_repository, recipe_repository=default_recipe_repository):
+    def __init__(self, user_repository=default_user_repo, recipe_repository=default_recipe_repo):
         """Luokan konstruktori.
 
         Args:
@@ -49,16 +49,16 @@ class Service:
             password: 3-15 merkkiä pitkä merkkijono, joka toimii käyttäjän salasanana
 
         Raises:
-            UsernameExistsError: virhe, joka tapahtuu, jos käyttäjätunnus on varattu toiselle käyttäjälle
-            UsernameNotValidError: virhe, joka tapahtuu, jos käyttäjätunnus ei täytä pituusvaatimusta
-            PasswordNotValidError: virhe, joka tapahtuu, jos salasana ei täytä pituusvaatimusta
+            UsernameExistsError: virhe, joka tapahtuu, jos käyttäjätunnus on varattu
+            UsernameNotValidError: virhe, joka tapahtuu, jos käyttäjätunnus rikkoo pituusvaatimusta
+            PasswordNotValidError: virhe, joka tapahtuu, jos salasana rikkoo pituusvaatimusta
 
         Returns:
             User-olio, joka kuvaa luotua käyttäjää
         """
 
         existing_user = self._user_repository.find_by_username(username)
-        if existing_user != None:
+        if existing_user is not None:
             raise UsernameExistsError(f'Username {username} is already in use')
 
         if len(username) < 3 or len(username) > 15:
@@ -82,7 +82,8 @@ class Service:
             password: merkkijono, joka toimii kirjautuvan käyttäjän salasanana
 
         Raises:
-            InvalidCredentialsError: virhe, joka tapahtuu, jos käyttäjää ei löydy tai käyttäjätunnus ja salasana eivät vastaa toisiaan
+            InvalidCredentialsError: virhe, joka tapahtuu, jos käyttäjää ei löydy
+                                     tai käyttäjätunnus ja salasana eivät vastaa toisiaan
 
         Returns:
             User-olio, joka kuvaa kirjautunutta käyttäjää
@@ -90,7 +91,7 @@ class Service:
 
         user = self._user_repository.find_by_username(username)
 
-        if user == None or user.password != password:
+        if user is None or user.password != password:
             raise InvalidCredentialsError("Invalid username or password")
 
         self._user = user
@@ -116,7 +117,8 @@ class Service:
 
         Args:
             name: merkkijono, joka nimeää reseptin
-            ingredients: lista tupleja, jotka ilmoittavat reseptiin tarvittavat ainekset ja niiden määrän, vapaaehtoinen
+            ingredients: lista tupleja, jotka ilmoittavat reseptiin tarvittavat ainekset
+                         ja niiden määrän, vapaaehtoinen
 
         Returns:
             Recipe-olio, joka kuvaa tallennetun reseptin
@@ -156,7 +158,8 @@ class Service:
         return result
 
     def find_recipes_by_ingredient(self, ingredient):
-        """Luokan metodi, joka hakee kirjautuneen käyttäjän resepteistä ne, joissa annettu ainesosa esiintyy.
+        """Luokan metodi, joka hakee kirjautuneen käyttäjän resepteistä ne,
+           joissa annettu ainesosa esiintyy.
 
         Args:
             ingredient: merkkijono, joka kertoo, minkä ainesosan perusteella haku tehdään
@@ -166,7 +169,8 @@ class Service:
         """
 
         user = self.get_current_user()
-        recipes = self._recipe_repository.find_recipe_by_ingredient(ingredient, user)
+        recipes = self._recipe_repository.find_recipe_by_ingredient(
+            ingredient, user)
 
         result = []
         for recipe in recipes:
@@ -174,7 +178,6 @@ class Service:
 
         result.sort()
         return result
-
 
     def find_ingredients(self, recipe):
         """Luokan metodi, joka hakee pyydettyyn reseptiin tarvittavat raaka-aineet.
@@ -213,7 +216,8 @@ class Service:
         """
 
         user = self.get_current_user()
-        self._recipe_repository.change_ingredient_amount(recipe, ingredient, new_amount, user)
+        self._recipe_repository.change_ingredient_amount(
+            recipe, ingredient, new_amount, user)
 
     def insert_an_ingredient(self, recipe, ingredient, amount):
         """Luokan metodi, joka lisää reseptiin uuden aineksen.
@@ -225,7 +229,8 @@ class Service:
         """
 
         user = self.get_current_user()
-        self._recipe_repository.insert_an_ingredient(recipe, ingredient, amount, user)
+        self._recipe_repository.insert_an_ingredient(
+            recipe, ingredient, amount, user)
 
     def delete_an_ingredient(self, recipe, ingredient):
         """Luokan metodi, joka poistaa reseptistä annetun aineksen.
@@ -237,5 +242,6 @@ class Service:
 
         user = self.get_current_user()
         self._recipe_repository.delete_an_ingredient(recipe, ingredient, user)
+
 
 service = Service()
