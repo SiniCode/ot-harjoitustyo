@@ -153,6 +153,12 @@ class UI:
         """Luokan metodi, joka tulostaa annetun reseptin ainekset ja niiden määrät tallennusjärjestyksessä."""
 
         name = input("Which recipe would you like to see? ")
+        user_recipes = service.find_recipes()
+
+        if not name in user_recipes:
+            print()
+            print(f"{name} not found")
+            self.logged_in_main()
 
         ingredients = service.find_ingredients(name)
 
@@ -268,7 +274,7 @@ class UI:
 
         recipe = input("Which recipe would you like to update? ")
 
-        users_recipes = self.find_all_recipes()
+        users_recipes = service.find_recipes()
         if recipe not in users_recipes:
             print()
             print("Recipe not found")
@@ -318,11 +324,16 @@ class UI:
     def create_menu(self):
         """Luokan metodi, jonka avulla käyttäjä voi luoda valitsemansa mittaisen ruokalistan."""
 
-        days = input("How many days would you like the menu to cover? ")
-        print()
+        try:
+            days = int(input("How many days would you like the menu to cover? "))
+        except ValueError:
+            print()
+            print("Please, give a number")
+            print()
+            self.create_menu()
 
         menu = []
-        recipes = self.find_all_recipes()
+        recipes = service.find_recipes()
 
         if recipes == []:
             print("Please, add some recipes first.")
@@ -333,6 +344,7 @@ class UI:
         while len(menu) < days:
             menu += recipes
 
+        print()
         print(f"Menu suggestion for {days} days:")
         print()
 
