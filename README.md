@@ -6,7 +6,7 @@ Hän voi hakea tallentamiaan reseptejä nimen tai raaka-aineiden perusteella. So
 Jokaisella käyttäjällä on sovellukseen oma käyttäjätunnus ja salasana.
 
 ### Dokumentaatio
-* [Vaatimusmäärittely](https://github.com/SiniCode/ot-harjoitustyo/blob/main/dokumentaatio/vaatimurmaarittely.md)
+* [Vaatimusmäärittely](https://github.com/SiniCode/ot-harjoitustyo/blob/main/dokumentaatio/vaatimusmaarittely.md)
 * [Työaikakirjanpito](https://github.com/SiniCode/ot-harjoitustyo/blob/main/dokumentaatio/tyoaikaseuranta.md)
 
 ### Asennus
