@@ -55,6 +55,30 @@ class RecipeRepository:
 
         return recipe
 
+    def delete_recipe(self, recipe, user):
+        """Luokan metodi, joka poistaa reseptin tietokannasta.
+
+        Args:
+            recipe: merkkijono, joka kertoo poistettavan reseptin nimen
+            user: User-olio, joka kertoo, kenen tallentama resepti poistetaan
+        """
+
+        cursor = self._connection.cursor()
+
+        row = cursor.execute(
+            "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
+        user_id = get_id_by_row(row)
+
+        row = cursor.execute(
+            "SELECT * FROM Recipes WHERE name=? AND user_id=?", (recipe, user_id)).fetchone()
+        recipe_id = get_id_by_row(row)
+
+        cursor.execute(DELETE FROM Ingredients WHERE recipe_id=?", [recipe_id])
+        cursor.execute(DELETE FROM Recipes WHERE id=?", [recipe_id])
+
+        self._connection.commit()
+
+
     def find_recipes_by_user(self, user):
         """Luokan metodi, joka etsii kaikkien käyttäjän tallentamien reseptien nimet.
 
