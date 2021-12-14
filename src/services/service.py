@@ -175,7 +175,7 @@ class Service:
 
         user = self.get_current_user()
         recipes = self._recipe_repository.find_recipe_by_ingredient(
-            ingredient, category, user)
+            ingredient, user, category)
 
         result = []
         for recipe in recipes:

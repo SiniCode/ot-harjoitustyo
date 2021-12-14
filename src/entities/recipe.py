@@ -20,6 +20,7 @@ class Recipe:
 
         self.name = name
         self.ingredients = ingredients
+        self.category = category
 
     def add_ingredient(self, ingredient, amount):
         """Luokan metodi, joka lisää reseptiin uuden aineksen.

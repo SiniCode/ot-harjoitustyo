@@ -116,7 +116,18 @@ class UI:
             else:
                 continue
 
-        service.add_recipe(name, ingredients)
+        category = "not defined"
+        while True:
+            print()
+            categorize = input("Would you like to categorize this recipe? (y/n) ")
+            if categorize == "y":
+                print()
+                category = input("Name the category: ")
+                break
+            elif categorize == "n":
+                break
+
+        service.add_recipe(name, ingredients, category)
 
         print()
         print(f"{name} added to your recipies!")
@@ -155,7 +166,7 @@ class UI:
         category = None
 
         while True:
-            narrow_search = input("Would you like to search within a certain category (y/n):
+            narrow_search = input("Would you like to search within a certain category (y/n)? ")
             if narrow_search == "y":
                 print()
                 category = input("Name the category: ")

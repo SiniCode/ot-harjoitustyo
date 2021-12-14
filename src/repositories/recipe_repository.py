@@ -106,7 +106,7 @@ class RecipeRepository:
 
         if category is not None:
             recipes = cursor.execute(
-                "SELECT * FROM Recipes WHERE user_id=? AND category=?,
+                "SELECT * FROM Recipes WHERE user_id=? AND category=?",
                  [user_id, category]).fetchall()
         else:
             recipes = cursor.execute(
@@ -120,14 +120,15 @@ class RecipeRepository:
 
         return result
 
-    def find_recipe_by_ingredient(self, ingredient, category=None, user):
+    def find_recipe_by_ingredient(self, ingredient, user, category=None):
         """Luokan metodi, joka etsii niiden käyttäjän tallentamien reseptien nimet,
            joissa haettu aines esiintyy.
 
         Args:
             ingredient: merkkijono, joka kertoo, minkä aineksen perusteella haku suoritetaan
-            category: merkkijono, joka kertoo, minkä kategorian reseptejä haetaan, vapaaehtoinen
             user: User-olio, joka kuvaa käyttäjän, jonka tallentamia reseptejä haetaan
+            category: merkkijono, joka kertoo, minkä kategorian reseptejä haetaan, vapaaehtoinen
+
 
         Returns:
             lista hakua vastaavien reseptien nimistä
