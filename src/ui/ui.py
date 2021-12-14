@@ -126,7 +126,18 @@ class UI:
     def find_all_recipes(self):
         """Luokan metodi, joka tulostaa käyttäjän tallentamien reseptien nimet aakkosjärjestyksessä."""
 
-        recipes = service.find_recipes()
+        category = None
+        while True:
+            narrow_search = input("Would you like to search within a certain category (y/n)? ")
+            if narrow_search == "y":
+                print()
+                category = input("Name the category: ")
+                print()
+                break
+            elif narrow_search == "n":
+                break
+
+        recipes = service.find_recipes(category)
 
         print("Your recipes:")
         print()
@@ -141,7 +152,19 @@ class UI:
         ingredient = input("Ingredient: ")
         print()
 
-        recipes = service.find_recipes_by_ingredient(ingredient)
+        category = None
+
+        while True:
+            narrow_search = input("Would you like to search within a certain category (y/n):
+            if narrow_search == "y":
+                print()
+                category = input("Name the category: ")
+                print()
+                break
+            elif narrow_search == "n":
+                break
+
+        recipes = service.find_recipes_by_ingredient(ingredient, category)
 
         print(f"Your recipes including {ingredient}:")
         print()
@@ -270,6 +293,20 @@ class UI:
 
         self.logged_in_main()
 
+    def change_recipe_category(self, recipe):
+        """Luokan metodi, jonka avulla käyttäjä voi luokitella reseptin uudelleen.
+
+        Args:
+            recipe: merkkijono, joka kertoo muokattavan reseptin nimen
+        """
+
+        category = input("Give the name of the category: ")
+        service.change_recipe_category(recipe, category)
+
+        print("The recipe is updated!")
+
+        self.logged_in_main()
+
     def update_recipe(self):
         """Luokan metodi, jonka avulla käyttäjä voi muuttaa tallentamiaan reseptejä."""
 
@@ -288,6 +325,7 @@ class UI:
             print("  2: Add an ingredient")
             print("  3: Remove an ingredient")
             print("  4: Change the amount of an ingredient")
+            print("  5: Change the category of the recipe")
             print()
 
             option = input("What would you like to do? ")
@@ -310,6 +348,9 @@ class UI:
 
             elif op == 4:
                 self.change_ingredient_amount(recipe)
+
+            elif op == 5:
+                self.change_recipe_category(recipe)
 
             else:
                 continue
@@ -334,8 +375,20 @@ class UI:
             print()
             self.create_menu()
 
+        category = None
+
+        while True:
+            narrow_search = input("Would you like to create the menu within a certain category (y/n)? ")
+            if narrow_search == "y":
+                print()
+                category = input("Name the category: ")
+                print()
+                break
+            elif narrow_search == "n":
+                break
+
         menu = []
-        recipes = service.find_recipes()
+        recipes = service.find_recipes(category)
 
         if recipes == []:
             print("Please, add some recipes first.")

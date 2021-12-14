@@ -5,15 +5,17 @@ class Recipe:
         name: merkkijono, joka nimeää reseptin
         ingredients: lista tupleja, jotka ilmoittavat
                      reseptiin tarvittavat ainekset ja niiden määrän
+        category: merkkijono, joka luokittelee reseptin tiettyyn kategoriaan
     """
 
-    def __init__(self, name, ingredients=[]):
+    def __init__(self, name, ingredients=[], category="not defined"):
         """Luokan konstruktori, joka luo uuden reseptin.
 
         Args:
             name: merkkijono, joka nimeää reseptin
             ingredients: lista tupleja, jotka ilmoittavat
                          reseptiin tarvittavat ainekset ja niiden määrän
+            category: merkkijono, joka luokittelee reseptin tiettyyn kategoriaan
         """
 
         self.name = name

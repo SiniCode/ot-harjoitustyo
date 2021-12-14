@@ -112,20 +112,21 @@ class Service:
 
         return self._user
 
-    def add_recipe(self, name, ingredients=[]):
+    def add_recipe(self, name, ingredients=[], category="not defined"):
         """Luokan metodi, joka lisää reseptin tietokantaan.
 
         Args:
             name: merkkijono, joka nimeää reseptin
             ingredients: lista tupleja, jotka ilmoittavat reseptiin tarvittavat ainekset
                          ja niiden määrän, vapaaehtoinen
+            category: merkkijono, joka luokittelee reseptin tiettyyn kategoriaan, vapaaehtoinen
 
         Returns:
             Recipe-olio, joka kuvaa tallennetun reseptin
         """
 
         user = self.get_current_user()
-        recipe = Recipe(name, ingredients)
+        recipe = Recipe(name, ingredients, category)
 
         self._recipe_repository.add_recipe(recipe, user)
         return recipe
@@ -140,15 +141,18 @@ class Service:
         user = self.get_current_user()
         self._recipe_repository.delete_recipe(recipe_name, user)
 
-    def find_recipes(self):
+    def find_recipes(self, category=None):
         """Luokan metodi, joka hakee kirjautuneen käyttäjän reseptit tietokannasta.
+
+        Args:
+            merkkijono, joka rajaa haun tiettyyn kategoriaan, vapaaehtoinen
 
         Returns:
             lista kirjautuneen käyttäjän tallentamien reseptien nimistä aakkosjärjestyksessä
         """
 
         user = self.get_current_user()
-        recipes = self._recipe_repository.find_recipes_by_user(user)
+        recipes = self._recipe_repository.find_recipes_by_user(user, category)
 
         result = []
         for recipe in recipes:
@@ -157,12 +161,13 @@ class Service:
         result.sort()
         return result
 
-    def find_recipes_by_ingredient(self, ingredient):
+    def find_recipes_by_ingredient(self, ingredient, category=None):
         """Luokan metodi, joka hakee kirjautuneen käyttäjän resepteistä ne,
            joissa annettu ainesosa esiintyy.
 
         Args:
             ingredient: merkkijono, joka kertoo, minkä ainesosan perusteella haku tehdään
+            category: merkkijono, joka rajaa haun tiettyyn kategoriaan, vapaaehtoinen
 
         Returns:
             lista hakua vastaavien reseptien nimistä aakkosjärjestyksessä
@@ -170,7 +175,7 @@ class Service:
 
         user = self.get_current_user()
         recipes = self._recipe_repository.find_recipe_by_ingredient(
-            ingredient, user)
+            ingredient, category, user)
 
         result = []
         for recipe in recipes:
@@ -205,6 +210,17 @@ class Service:
 
         user = self.get_current_user()
         self._recipe_repository.change_recipe_name(old_name, new_name, user)
+
+    def change_recipe_category(self, recipe, new_category):
+        """Luokan metodi, joka muuttaa reseptin kategorian.
+
+        Args:
+            recipe: merkkijono, joka kertoo, muokattavan reseptin nimen
+            new_category: merkkijono, joka kertoo, mihin kategoriaan resepti luokitellaan
+        """
+
+        user = self.get_current_user()
+        self.recipe_repository.change_recipe_category(recipe, new_category, user)
 
     def change_ingredient_amount(self, recipe, ingredient, new_amount):
         """Luokan metodi, joka muuttaa reseptiin tarvittavan ainesosan määrän.

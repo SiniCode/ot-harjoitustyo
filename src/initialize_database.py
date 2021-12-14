@@ -33,6 +33,7 @@ def create_tables(connection):
         CREATE TABLE Recipes (
             id INTEGER PRIMARY KEY,
             name TEXT,
+            category TEXT,
             user_id INTEGER REFERENCES Users);
     ''')
 

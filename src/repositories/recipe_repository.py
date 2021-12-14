@@ -41,7 +41,8 @@ class RecipeRepository:
         user_id = get_id_by_row(row)
 
         cursor.execute(
-            "INSERT INTO Recipes (name, user_id) VALUES (?, ?)", [recipe.name, user_id])
+            "INSERT INTO Recipes (name, category, user_id) VALUES (?, ?, ?)", 
+             [recipe.name, recipe.category, user_id])
 
         cursor.execute(
             "SELECT * FROM Recipes WHERE name=? AND user_id=?", (recipe.name, user_id))
@@ -85,11 +86,13 @@ class RecipeRepository:
         self._connection.commit()
         cursor.close()
 
-    def find_recipes_by_user(self, user):
+    def find_recipes_by_user(self, user, category=None):
         """Luokan metodi, joka etsii kaikkien käyttäjän tallentamien reseptien nimet.
 
         Args:
             user: User-olio, joka kuvaa kirjautunutta käyttäjää
+            category: merkkijono, joka kertoo, minkä kategorian reseptit 
+                      halutaan mukaan, vapaaehtoinen
 
         Returns:
             lista käyttäjän tallentamien reseptien nimistä
@@ -101,8 +104,13 @@ class RecipeRepository:
             "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
         user_id = get_id_by_row(row)
 
-        recipes = cursor.execute(
-            "SELECT * FROM Recipes WHERE user_id=?", [user_id]).fetchall()
+        if category is not None:
+            recipes = cursor.execute(
+                "SELECT * FROM Recipes WHERE user_id=? AND category=?,
+                 [user_id, category]).fetchall()
+        else:
+            recipes = cursor.execute(
+                "SELECT * FROM Recipes WHERE user_id=?", [user_id]).fetchall()
 
         cursor.close()
 
@@ -112,12 +120,13 @@ class RecipeRepository:
 
         return result
 
-    def find_recipe_by_ingredient(self, ingredient, user):
+    def find_recipe_by_ingredient(self, ingredient, category=None, user):
         """Luokan metodi, joka etsii niiden käyttäjän tallentamien reseptien nimet,
            joissa haettu aines esiintyy.
 
         Args:
             ingredient: merkkijono, joka kertoo, minkä aineksen perusteella haku suoritetaan
+            category: merkkijono, joka kertoo, minkä kategorian reseptejä haetaan, vapaaehtoinen
             user: User-olio, joka kuvaa käyttäjän, jonka tallentamia reseptejä haetaan
 
         Returns:
@@ -130,9 +139,15 @@ class RecipeRepository:
             "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
         user_id = get_id_by_row(row)
 
-        query = """SELECT * FROM Recipes R, Ingredients I
+        if category is not None:
+            query = """SELECT * FROM Recipes R, Ingredients I
+                         WHERE R.user_id=? AND R.id = I.recipe_id AND 
+                         I.name=? AND R.category=?"""
+            values = [user_id, ingredient, category]
+        else:
+            query = """SELECT * FROM Recipes R, Ingredients I
                      WHERE R.user_id=? AND R.id = I.recipe_id AND I.name=?"""
-        values = [user_id, ingredient]
+            values = [user_id, ingredient]
 
         recipes = cursor.execute(query, values).fetchall()
 
@@ -199,6 +214,28 @@ class RecipeRepository:
 
         query = """UPDATE Recipes SET name=? WHERE id=?"""
         values = (new_name, recipe_id)
+        cursor.execute(query, values)
+
+        self._connection.commit()
+        cursor.close()
+
+    def change_recipe_category(self, recipe, new_category, user):
+        """Luokan metodi, joka muuttaa reseptin kategorian tietokannassa.
+
+        Args:
+            recipe: merkkijono, joka kertoo reseptin nimen
+            new_category: merkkijono, joka kertoo kategorian, johon resepti siirretään
+            user: User-olio, joka kertoo, kenen tallentamaa reseptiä käsitellään
+        """
+
+        cursor = self._connection.cursor()
+
+        row = cursor.execute(
+            "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
+        user_id = get_id_by_row(row)
+
+        query = """UPDATE Recipes SET category=? WHERE name=? AND user_id=?"""
+        values = (new_category, recipe, user_id)
         cursor.execute(query, values)
 
         self._connection.commit()
