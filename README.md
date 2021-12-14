@@ -13,6 +13,7 @@ Jokaisella käyttäjällä on sovellukseen oma käyttäjätunnus ja salasana.
 
 ### Releaset
 * [Viikko 5](https://github.com/SiniCode/ot-harjoitustyo/releases/tag/viikko5)
+* [Viikko 6](https://github.com/SiniCode/ot-harjoitustyo/releases/tag/viikko6)
 
 ### Asennus
 
