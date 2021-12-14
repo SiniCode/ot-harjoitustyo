@@ -11,6 +11,27 @@ Ohjelma on rakennettu kolmitasoisen kerrosarkkitehtuurin periaatteita noudattaen
 Pakkaus *ui* sisältää käyttöliittymästä, *services* sovelluslogiikasta ja *repositories* tietokantaoperaatiosta vastaavan koodin.
 Pakkaus *entities* sisältää luokkia, jotka kuvastavat sovelluksen käyttämiä tietokohteita, *User* ja *Recipe*.
 
+## Sovelluslogiikka
+
+Sovelluslogiikasta vastaavat metodit on koottu omaan [Service-luokkaansa](https://github.com/SiniCode/ot-harjoitustyo/blob/main/src/services/service.py).
+Käyttöliittymän toiminnallisuudet on toteutettu kutsumalla näitä metodeita.
+Tietokantaoperaatiot on eristetty sovelluslogiikasta, joten Service-luokka
+puolestaan kutsuu tarvittaessa niistä vastaavia luokkia [UserRepository](https://github.com/SiniCode/ot-harjoitustyo/blob/main/src/repositories/user_repository.py)
+ja [RecipeRepository](https://github.com/SiniCode/ot-harjoitustyo/blob/main/src/repositories/recipe_repository.py).
+
+## Tietojen pysyväistallennus
+
+Käyttäjien tiedot ja reseptit tallennetaan SQLite-tietokantaan.
+Tietokanta alustetaan ennen sovelluksen ensimmäistä käynnistystä komennolla:
+
+```bash
+poetry run invoke build
+```
+
+Tietokantaoperaatioista vastaavat *repositories*-pakkauksen luokat [UserRepository](https://github.com/SiniCode/ot-harjoitustyo/blob/main/src/repositories/user_repository.py)
+ja [RecipeRepository](https://github.com/SiniCode/ot-harjoitustyo/blob/main/src/repositories/recipe_repository.py).
+
+
 ## Tärkeimmät toiminnallisuudet (täydentyy myöhemmin)
 
 Sovelluksen tärkeimmät toiminnallisuudet kuvattuna sekvenssikaavioina.
