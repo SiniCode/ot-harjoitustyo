@@ -41,8 +41,8 @@ class RecipeRepository:
         user_id = get_id_by_row(row)
 
         cursor.execute(
-            "INSERT INTO Recipes (name, category, user_id) VALUES (?, ?, ?)", 
-             [recipe.name, recipe.category, user_id])
+            "INSERT INTO Recipes (name, category, user_id) VALUES (?, ?, ?)",
+            [recipe.name, recipe.category, user_id])
 
         cursor.execute(
             "SELECT * FROM Recipes WHERE name=? AND user_id=?", (recipe.name, user_id))
@@ -91,7 +91,7 @@ class RecipeRepository:
 
         Args:
             user: User-olio, joka kuvaa kirjautunutta käyttäjää
-            category: merkkijono, joka kertoo, minkä kategorian reseptit 
+            category: merkkijono, joka kertoo, minkä kategorian reseptit
                       halutaan mukaan, vapaaehtoinen
 
         Returns:
@@ -107,7 +107,7 @@ class RecipeRepository:
         if category is not None:
             recipes = cursor.execute(
                 "SELECT * FROM Recipes WHERE user_id=? AND category=?",
-                 [user_id, category]).fetchall()
+                [user_id, category]).fetchall()
         else:
             recipes = cursor.execute(
                 "SELECT * FROM Recipes WHERE user_id=?", [user_id]).fetchall()
@@ -142,7 +142,7 @@ class RecipeRepository:
 
         if category is not None:
             query = """SELECT * FROM Recipes R, Ingredients I
-                         WHERE R.user_id=? AND R.id = I.recipe_id AND 
+                         WHERE R.user_id=? AND R.id = I.recipe_id AND
                          I.name=? AND R.category=?"""
             values = [user_id, ingredient, category]
         else:

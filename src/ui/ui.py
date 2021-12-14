@@ -120,7 +120,8 @@ class UI:
         category = "not defined"
         while True:
             print()
-            categorize = input("Would you like to categorize this recipe? (y/n) ").strip()
+            categorize = input(
+                "Would you like to categorize this recipe? (y/n) ").strip()
             if categorize == "y":
                 print()
                 category = input("Name the category: ").strip()
@@ -140,7 +141,8 @@ class UI:
 
         category = None
         while True:
-            narrow_search = input("Would you like to search within a certain category (y/n)? ").strip()
+            narrow_search = input(
+                "Would you like to search within a certain category (y/n)? ").strip()
             if narrow_search == "y":
                 print()
                 category = input("Name the category: ").strip()
@@ -167,7 +169,8 @@ class UI:
         category = None
 
         while True:
-            narrow_search = input("Would you like to search within a certain category (y/n)? ").strip()
+            narrow_search = input(
+                "Would you like to search within a certain category (y/n)? ").strip()
             if narrow_search == "y":
                 print()
                 category = input("Name the category: ").strip()
@@ -278,7 +281,8 @@ class UI:
             recipe: merkkijono, joka kertoo, mistä reseptistä aines poistetaan
         """
 
-        ingredient = input("Which ingredient would you like to remove? ").strip()
+        ingredient = input(
+            "Which ingredient would you like to remove? ").strip()
 
         service.delete_an_ingredient(recipe, ingredient)
 
@@ -389,7 +393,8 @@ class UI:
         category = None
 
         while True:
-            narrow_search = input("Would you like to create the menu within a certain category (y/n)? ").strip()
+            narrow_search = input(
+                "Would you like to create the menu within a certain category (y/n)? ").strip()
             if narrow_search == "y":
                 print()
                 category = input("Name the category: ").strip()
@@ -425,7 +430,8 @@ class UI:
 
         user_recipes = service.find_recipes()
         ingredients = []
-        recipe = input("Which recipe would you like to add to calculation? ").strip()
+        recipe = input(
+            "Which recipe would you like to add to calculation? ").strip()
         if recipe not in user_recipes:
             print("Recipe not found")
             self.calculate_ingredients()
@@ -434,7 +440,8 @@ class UI:
 
         while True:
             print()
-            add = input("Would you like to add another recipe to calculation (y/n) ").strip()
+            add = input(
+                "Would you like to add another recipe to calculation (y/n) ").strip()
             print()
             if add == "y":
                 recipe = input("Which recipe? ").strip()
@@ -465,7 +472,6 @@ class UI:
             teaspoons = 0.0
             a = 0.0
 
-
             for amount_str in amounts:
                 amount = amount_str.split()
                 try:
@@ -492,7 +498,7 @@ class UI:
                     elif amount[1] in ["tl", "tsp"]:
                         teaspoons += number
                     elif amount[1] in ["kpl", "pcs"]:
-                        a += number 
+                        a += number
                     else:
                         memory.append(amount_str)
 
