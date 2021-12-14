@@ -9,6 +9,7 @@ from services.service import (
     InvalidCredentialsError
 )
 
+
 class TestService(unittest.TestCase):
     def setUp(self):
         service.delete_everything()

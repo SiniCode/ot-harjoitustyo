@@ -260,11 +260,11 @@ class Service:
         user = self.get_current_user()
         self._recipe_repository.delete_an_ingredient(recipe, ingredient, user)
 
-
     def delete_everything(self):
         """Luokan metodi, joka tyhjentää koko tietokannan."""
 
         self._user_repository.delete_all()
         self._recipe_repository.delete_all()
+
 
 service = Service()
