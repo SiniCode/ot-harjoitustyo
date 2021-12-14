@@ -37,13 +37,13 @@ Jokaisella käyttäjällä on sovellukseen oma käyttäjätunnus ja salasana.
 - käyttäjä voi pyytää sovellusta luomaan haluamansa mittaisen ruokalistan, jolloin sovellus arpoo tallennettujen reseptien joukosta pyydetyn määrän reseptejä    (tehty)
   - jos ruokalistan pituus on suurempi kuin tallennettujen reseptien määrä, sama resepti voi tulla ruokalistalle useamman kerran
 
-- käyttäjä voi pyytää sovellusta laskemaan luodun ruokalistan valmistamiseen vaadittavien raaka-aineiden yhteismäärät
+- käyttäjä voi pyytää sovellusta laskemaan useamman reseptin valmistamiseen vaadittavien raaka-aineiden yhteismäärät (tehty)
 
 - käyttäjä voi vaihtaa luodulta ruokalistalta yhden tai useamman reseptin johonkin toiseen
 
-- käyttäjä voi luokitella reseptejä eri kategorioihin
+- käyttäjä voi luokitella reseptejä eri kategorioihin (tehty)
 
-- käyttäjä voi tarkentaa hakua ja ruokalistan luomista kategorioiden perusteella
+- käyttäjä voi tarkentaa hakua ja ruokalistan luomista kategorioiden perusteella (tehty)
 
 - käyttäjä voi tallentaa tiedon siitä, milloin on valmistanut tiettyä ruokaa viimeksi
   - sovellus pitää myös kirjaa siitä, miten monta kertaa käyttäjä on kaikkiaan valmistanut tiettyä ruokaa
