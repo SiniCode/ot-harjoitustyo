@@ -220,7 +220,7 @@ class Service:
         """
 
         user = self.get_current_user()
-        self.recipe_repository.change_recipe_category(recipe, new_category, user)
+        self._recipe_repository.change_recipe_category(recipe, new_category, user)
 
     def change_ingredient_amount(self, recipe, ingredient, new_amount):
         """Luokan metodi, joka muuttaa reseptiin tarvittavan ainesosan määrän.
