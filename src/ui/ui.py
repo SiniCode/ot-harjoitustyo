@@ -36,67 +36,53 @@ class UI:
     def login(self):
         """Luokan metodi, joka kirjaa käyttäjän sisään."""
 
-        while True:
-            confirm = input("Do you want to log in? (y/n): ").strip()
-            if confirm == "n":
-                self.main()
+        print()
+        username = input("Username: ")
+        password = input("Password: ")
 
-            elif confirm == "y":
-                print()
-                username = input("Username: ")
-                password = input("Password: ")
+        try:
+            service.login(username, password)
+            print()
+            print(f'Welcome, {username}!')
+            self.logged_in_main()
 
-                try:
-                    service.login(username, password)
-                    print()
-                    print(f'Welcome, {username}!')
-                    self.logged_in_main()
-
-                except InvalidCredentialsError:
-                    print()
-                    print("Invalid username or password")
-                    continue
-
-            else:
-                continue
+        except InvalidCredentialsError:
+            print()
+            print("Invalid username or password")
+            self.main()
 
     def create_user(self):
-        """Luokan metodi, jonka avulla luodaan uusi käyttäjä ja asetetaan sille salasana."""
+        """Luokan metodi, jonka avulla luodaan uusi käyttäjä ja asetetaan
+           sille salasana. Samalla uusi käyttäjä kirjataan sisään."""
 
-        while True:
-            confirm = input("Do you want to create a new user? (y/n) ").strip()
-            if confirm == "n":
-                self.main()
+        print()
+        username = input("Username (3-15 characters): ")
+        password = input("Password (3-15 characters): ")
 
-            elif confirm == "y":
-                print()
-                username = input("Username (3-15 characters): ")
-                password = input("Password (3-15 characters): ")
+        try:
+            service.create_user(username, password)
+            print()
+            print(f'Welcome, {username}!')
+            self.logged_in_main()
 
-                try:
-                    service.create_user(username, password)
-                    print()
-                    print(f'Welcome, {username}!')
-                    self.logged_in_main()
+        except UsernameExistsError:
+            print()
+            print(f'Username {username} is already in use')
+            self.main()
 
-                except UsernameExistsError:
-                    print()
-                    print(f'Username {username} is already in use')
-                    continue
-                except UsernameNotValidError:
-                    print()
-                    print("Invalid username")
-                    continue
-                except PasswordNotValidError:
-                    print()
-                    print("Invalid password")
-                    continue
+        except UsernameNotValidError:
+            print()
+            print("Invalid username")
+            self.main()
 
-            else:
-                continue
+        except PasswordNotValidError:
+            print()
+            print("Invalid password")
+            self.main()
 
     def add_recipe(self):
-        """Luokan metodi, jonka avulla kirjautunut käyttäjä voi lisätä uuden reseptin tietokantaan."""
+        """Luokan metodi, jonka avulla kirjautunut käyttäjä voi lisätä
+           uuden reseptin tietokantaan."""
 
         name = input("Name the recipe: ").strip()
         ingredients = []
@@ -105,10 +91,10 @@ class UI:
             print()
             confirm = input(
                 "Would you like to add an ingredient to the recipe? (y/n) ").strip()
-            if confirm == "n":
+            if confirm == "n" or confirm == "N":
                 break
 
-            elif confirm == "y":
+            elif confirm == "y" or confirm == "Y":
                 print()
                 ingredient = input("Ingredient: ").strip()
                 amount = input("Amount: ").strip()
@@ -122,11 +108,13 @@ class UI:
             print()
             categorize = input(
                 "Would you like to categorize this recipe? (y/n) ").strip()
-            if categorize == "y":
+
+            if categorize == "y" or categorizw == "Y":
                 print()
                 category = input("Name the category: ").strip()
                 break
-            elif categorize == "n":
+
+            elif categorize == "n" or categorize == "N":
                 break
 
         service.add_recipe(name, ingredients, category)
@@ -136,60 +124,69 @@ class UI:
 
         self.logged_in_main()
 
-    def find_all_recipes(self):
-        """Luokan metodi, joka tulostaa käyttäjän tallentamien reseptien nimet aakkosjärjestyksessä."""
+    def _narrow_search_to_category(self):
+        """Luokan metodi, joka kysyy käyttäjältä, haluaako hän rajata
+           tekemänsä haun tiettyyn kategoriaan.
+
+        Returns:
+            merkkijono, joka ilmoittaa kategorian, johon haku rajataan
+            None, jos käyttäjä ei halua rajata hakua
+        """
 
         category = None
+
         while True:
             narrow_search = input(
-                "Would you like to search within a certain category (y/n)? ").strip()
-            if narrow_search == "y":
+                "Would you like to search within a certain category (y/n)? ").s>
+
+            if narrow_search == "y" or narrow_search == "Y":
                 print()
                 category = input("Name the category: ").strip()
                 print()
                 break
-            elif narrow_search == "n":
+
+            elif narrow_search == "n" or narrow_search == "N":
                 break
+
+        return category
+
+    def find_all_recipes(self):
+        """Luokan metodi, joka tulostaa käyttäjän tallentamien reseptien
+           nimet ja kategoriat aakkosjärjestyksessä nimen mukaan."""
+
+        category = self._narrow_search_to_category()
 
         recipes = service.find_recipes(category)
 
         print("Your recipes:")
         print()
-        for r in recipes:
-            print(r)
+        for (name, category) in recipes:
+            print(f"({name:40} ({category})")
 
         self.logged_in_main()
 
     def find_recipes_by_ingredient(self):
-        """Luokan metodi, joka tulostaa aakkosjärjestyksessä niiden käyttäjän tallentamien reseptien nimet, joissa annettu aines esiintyy."""
+        """Luokan metodi, joka tulostaa aakkosjärjestyksessä niiden
+           käyttäjän tallentamien reseptien nimet ja kategoriat,
+           joissa annettu aines esiintyy."""
 
         ingredient = input("Ingredient: ").strip()
         print()
 
-        category = None
-
-        while True:
-            narrow_search = input(
-                "Would you like to search within a certain category (y/n)? ").strip()
-            if narrow_search == "y":
-                print()
-                category = input("Name the category: ").strip()
-                print()
-                break
-            elif narrow_search == "n":
-                break
+        category = self._narrow_search_to_category()
 
         recipes = service.find_recipes_by_ingredient(ingredient, category)
 
         print(f"Your recipes including {ingredient}:")
         print()
-        for r in recipes:
-            print(r)
+        for (name, category) in recipes:
+            print(f"({name:40} ({category})")
 
         self.logged_in_main()
 
     def find_ingredients(self):
-        """Luokan metodi, joka tulostaa annetun reseptin ainekset ja niiden määrät tallennusjärjestyksessä."""
+        """Luokan metodi, joka tulostaa annetun reseptin ainekset
+           ja niiden määrät tallennusjärjestyksessä."""
 
         name = input("Which recipe would you like to see? ").strip()
         user_recipes = service.find_recipes()
@@ -222,6 +219,7 @@ class UI:
             print()
 
             option = input("What would you like to do? ").strip()
+
             try:
                 op = int(option)
             except ValueError:
@@ -242,7 +240,8 @@ class UI:
                 continue
 
     def rename_recipe(self, recipe):
-        """Luokan metodi, jonka avulla käyttäjä voi nimetä tallentamansa reseptin uudelleen.
+        """Luokan metodi, jonka avulla käyttäjä voi nimetä tallentamansa
+           reseptin uudelleen.
 
         Args:
             recipe: merkkijono, joka kertoo, mitä reseptiä halutaan muuttaa
@@ -274,6 +273,23 @@ class UI:
 
         self.logged_in_main()
 
+    def _check_ingredients(self, recipe, ingredient):
+        """Luokan metodi, joka tarkastaa, löytyykö annettu aines reseptistä.
+
+        Args:
+            recipe: merkkijono, joka kertoo tarkasteltavan reseptin nimen
+            ingredient: merkkijono, joka kertoo, mitä ainesta etsitään
+        """
+
+        recipe_ingredients = servece.find_ingredients(recipe)
+
+        for (name,amount) in recipe_ingredients:
+            if name == ingredient:
+                return
+            if (name,amount) == recipe_ingredients[-1]:
+               print(f"Recipe {recipe} doesn't contain {ingredient}")
+               self.logged_in_main()
+
     def remove_an_ingredient(self, recipe):
         """Luokan metodi, joka poistaa reseptistä tallennetun aineksen.
 
@@ -284,6 +300,8 @@ class UI:
         ingredient = input(
             "Which ingredient would you like to remove? ").strip()
 
+        self._check_ingredients(recipe, ingredient)
+
         service.delete_an_ingredient(recipe, ingredient)
 
         print()
@@ -292,13 +310,17 @@ class UI:
         self.logged_in_main()
 
     def change_ingredient_amount(self, recipe):
-        """Luokan metodi, jonka avulla käyttäjä voi muuttaa tietyn aineksen määrää tallennetussa reseptissä.
+        """Luokan metodi, jonka avulla käyttäjä voi muuttaa tietyn
+           aineksen määrää tallennetussa reseptissä.
 
         Args:
             recipe: merkkijono, joka kertoo, mitä reseptiä halutaan muuttaa
         """
 
         ingredient = input("Name of the ingredient: ").strip()
+
+        self._check_ingredients(recipe, ingredient)
+
         amount = input("Updated amount: ").strip()
 
         service.change_ingredient_amount(recipe, ingredient, amount)
@@ -309,29 +331,42 @@ class UI:
         self.logged_in_main()
 
     def change_recipe_category(self, recipe):
-        """Luokan metodi, jonka avulla käyttäjä voi luokitella reseptin uudelleen.
+        """Luokan metodi, jonka avulla käyttäjä voi luokitella reseptin
+           uudelleen.
 
         Args:
             recipe: merkkijono, joka kertoo muokattavan reseptin nimen
         """
 
         category = input("Give the name of the category: ").strip()
+
         service.change_recipe_category(recipe, category)
 
         print("The recipe is updated!")
 
         self.logged_in_main()
 
+    def _check_user_recipes(self, recipe):
+        """Luokan metodi, joka tarkastaa, löytyykö tietty resepti käyttäjän
+           tallentamista resepteistä."""
+
+        user_recipes = service.find_recipes()
+
+        for (name, category) in user_recipes:
+            if name == recipe:
+                return
+            if (name, category) == user_recipes[-1]:
+                print()
+                print("Recipe not found")
+                self.logged_in_main()
+
     def update_recipe(self):
-        """Luokan metodi, jonka avulla käyttäjä voi muuttaa tallentamiaan reseptejä."""
+        """Luokan metodi, jonka avulla käyttäjä voi muuttaa tallentamiaan
+           reseptejä."""
 
         recipe = input("Which recipe would you like to update? ").strip()
 
-        users_recipes = service.find_recipes()
-        if recipe not in users_recipes:
-            print()
-            print("Recipe not found")
-            self.logged_in_main()
+        self._check_user_recipes(recipe)
 
         while True:
             print()
@@ -371,15 +406,23 @@ class UI:
                 continue
 
     def delete_recipe(self):
+        """Luokan metodi, jonka avulla käyttäjä voi poistaa reseptin
+           tietokannasta."""
+
         recipe = input("Which recipe would you like to delete? ").strip()
+
+        self._check_user_recipes(recipe)
+
         service.delete_recipe(recipe)
+
         print()
         print(f"Recipe {recipe} deleted!")
 
         self.logged_in_main()
 
     def create_menu(self):
-        """Luokan metodi, jonka avulla käyttäjä voi luoda valitsemansa mittaisen ruokalistan."""
+        """Luokan metodi, jonka avulla käyttäjä voi luoda valitsemansa
+           mittaisen ruokalistan."""
 
         try:
             days = int(
@@ -390,18 +433,7 @@ class UI:
             print()
             self.create_menu()
 
-        category = None
-
-        while True:
-            narrow_search = input(
-                "Would you like to create the menu within a certain category (y/n)? ").strip()
-            if narrow_search == "y":
-                print()
-                category = input("Name the category: ").strip()
-                print()
-                break
-            elif narrow_search == "n":
-                break
+        category = self._narrow_search_to_category()
 
         menu = []
         recipes = service.find_recipes(category)
@@ -420,37 +452,51 @@ class UI:
         print()
 
         for d in range(days):
-            print(menu[d])
+            print(menu[d][0])
 
         self.logged_in_main()
 
-    def calculate_ingredients(self):
-        """Luokan metodi, jonka avulla käyttäjä voi laskea yhteen
-           antamiinsa resepteihin tarvittava raaka-aineet."""
+    def _add_recipe_to_calculation(self, ingredients, user_recipes):
+        """Luokan metodi, jonka avulla raaka-aineiden laskentaan voidaan
+           lisätä reseptejä.
 
-        user_recipes = service.find_recipes()
-        ingredients = []
-        recipe = input(
-            "Which recipe would you like to add to calculation? ").strip()
-        if recipe not in user_recipes:
-            print("Recipe not found")
-            self.calculate_ingredients()
-
-        ingredients.append(service.find_ingredients(recipe))
+        Args:
+            ingredients: lista, jossa kunkin reseptin raaka-aineet ja niiden
+                         määrät on esitetty listana tupleja
+            user_recipes: lista käyttäjän tallentamista resepteistä
+        """
 
         while True:
             print()
             add = input(
-                "Would you like to add another recipe to calculation (y/n) ").strip()
+                "Would you like to add another recipe to calculation (y/n) ").s>
             print()
-            if add == "y":
+
+            if add == "y" or add == "Y":
                 recipe = input("Which recipe? ").strip()
+
                 if recipe not in user_recipes:
                     print("Recipe not found")
                     continue
+
                 ingredients.append(service.find_ingredients(recipe))
-            elif add == "n":
+
+            elif add == "n" or add == "N":
                 break
+
+    def _add_ingredients_to_dictionary(self, ingredients):
+        """Luokan metodi, joka luo laskennan aineksista sanakirjaolion.
+
+        Args:
+            ingredients: lista, jossa kunkin laskennassa huomioitavan
+                         reseptin ainekset ja niiden määrät on ilmoitettu
+                         listana tupleja
+
+        Returns:
+            sanakirjaolio, jossa ainesten nimet ovat avaimina ja arvona on
+            lista, joka ilmoittaa, kuinka paljon kyseistä ainesta kussakin
+            reseptissä tarvitaan
+        """
 
         ingredient_dict = {}
 
@@ -460,6 +506,33 @@ class UI:
                     ingredient_dict[ingredient] = [amount]
                 else:
                     ingredient_dict[ingredient].append(amount)
+
+        return ingredient_dict
+
+    def calculate_ingredients(self):
+        """Luokan metodi, jonka avulla käyttäjä voi laskea yhteen
+           antamiinsa resepteihin tarvittavat raaka-aineet."""
+
+        recipe_list = service.find_recipes()
+        user_recipes = []
+
+        for (name, category) in recipe_list:
+            user_recipes.append(name)
+
+        ingredients = []
+
+        recipe = input(
+            "Which recipe would you like to add to calculation? ").strip()
+
+        if recipe not in user_recipes:
+            print("Recipe not found")
+            self.calculate_ingredients()
+
+        ingredients.append(service.find_ingredients(recipe))
+
+        self._add_recipe_to_calculation(ingredients, user_recipes)
+
+        ingredient_dict = self._add_ingredients_to_dictionary(ingredients)
 
         result = []
 
@@ -532,20 +605,24 @@ class UI:
 
         while True:
             confirmation = input("Do you want to log out? (y/n) ").strip()
-            if confirmation == "n":
+            if confirmation == "n" or confirmation == "N":
                 self.logged_in_main()
 
-            elif confirmation == "y":
+            elif confirmation == "y" or confirmation == "Y":
                 print()
-                user = service.get_current_user()
                 service.logout()
-                print(f"Goodbye!")
+
+                print(f"Have a delicious day!")
+
                 self.main()
 
             else:
                 continue
 
     def main(self):
+        """Luokan metodi, joka näyttää kirjautumattoman
+           käyttäjän vaihtoehdot."""
+
         self.options()
 
         option = input("Choose option: ").strip()
@@ -564,13 +641,15 @@ class UI:
             self.create_user()
 
         elif op == 3:
-            print("Have a delicious day!")
             exit()
 
         else:
             self.main()
 
     def logged_in_main(self):
+        """Luokan metodi, joka näyttää kirjautuneen
+           käyttäjän vaihtoehdot."""
+
         self.logged_in_options()
 
         option = input("Choose option: ").strip()
