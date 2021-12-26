@@ -26,6 +26,14 @@ class TestRecipeRepository(unittest.TestCase):
         self.assertEqual(recipe_repository.add_recipe(
             self.recipe_keksit, self.user_hemmo), self.recipe_keksit)
 
+    def test_add_recipe_inserts_recipe_into_database(self):
+        user_repository.create_user(self.user_hemmo)
+        self.assertEqual(recipe_repository.find_recipes_by_user(
+            self.user_hemmo), [])
+        recipe_repository.add_recipe(self.recipe_keksit, self.user_hemmo)
+        self.assertEqual(recipe_repository.find_recipes_by_user(
+            self.user_hemmo), [('keksit', 'jälkiruuat')])
+
     def test_find_recipes_by_user_returns_correct_list(self):
         user_repository.create_user(self.user_hemmo)
         recipe_repository.add_recipe(self.recipe_puuro, self.user_hemmo)
@@ -54,6 +62,7 @@ class TestRecipeRepository(unittest.TestCase):
     def test_find_ingredients_by_recipe_returns_correct_list2(self):
         user_repository.create_user(self.user_hemmo)
         recipe_repository.add_recipe(self.recipe_puuro, self.user_hemmo)
+
         user_repository.create_user(self.user_haiku)
         recipe_repository.add_recipe(self.recipe_puuro2, self.user_haiku)
 
@@ -73,6 +82,7 @@ class TestRecipeRepository(unittest.TestCase):
         user_repository.create_user(self.user_hemmo)
         recipe_repository.add_recipe(self.recipe_puuro, self.user_hemmo)
         recipe_repository.add_recipe(self.recipe_keksit, self.user_hemmo)
+
         user_repository.create_user(self.user_haiku)
         recipe_repository.add_recipe(self.recipe_puuro, self.user_haiku)
         recipe_repository.add_recipe(self.recipe_keksit, self.user_haiku)
@@ -100,6 +110,45 @@ class TestRecipeRepository(unittest.TestCase):
         self.assertEqual(recipe_repository.find_recipes_by_user(
             self.user_hemmo)[0], ('koiran puuro', 'not defined'))
 
+    def test_change_recipe_name_does_not_change_other_users_recipes(self):
+        user_repository.create_user(self.user_hemmo)
+        recipe_repository.add_recipe(self.recipe_puuro, self.user_hemmo)
+
+        user_repository.create_user(self.user_haiku)
+        recipe_repository.add_recipe(self.recipe_puuro, self.user_haiku)
+        recipe_repository.change_recipe_name('puuro', 'koiran puuro', self.user_haiku)
+
+        self.assertEqual(recipe_repository.find_recipes_by_user(
+            self.user_hemmo), [('puuro', 'not defined')])
+        self.assertEqual(recipe_repository.find_recipes_by_user(
+            self.user_haiku), [('koiran puuro', 'not defined')])
+
+    def test_change_recipe_category(self):
+        user_repository.create_user(self.user_hemmo)
+        recipe_repository.add_recipe(self.recipe_puuro, self.user_hemmo)
+        self.assertEqual(recipe_repository.find_recipes_by_user(
+            self.user_hemmo)[0][1], 'not defined')
+
+        recipe_repository.change_recipe_category(
+            'puuro', 'koiran ruuat', self.user_hemmo)
+
+        self.assertEqual(recipe_repository.find_recipes_by_user(
+            self.user_hemmo)[0][1], 'koiran ruuat')
+
+    def test_change_recipe_category_does_not_change_other_users_recipes(self):
+        user_repository.create_user(self.user_hemmo)
+        recipe_repository.add_recipe(self.recipe_puuro, self.user_hemmo)
+
+        user_repository.create_user(self.user_haiku)
+        recipe_repository.add_recipe(self.recipe_puuro, self.user_haiku)
+        recipe_repository.change_recipe_category(
+            'puuro', 'koiran ruuat', self.user_haiku)
+
+        self.assertEqual(recipe_repository.find_recipes_by_user(
+            self.user_hemmo)[0][1], 'not defined')
+        self.assertEqual(recipe_repository.find_recipes_by_user(
+            self.user_haiku)[0][1], 'koiran ruuat')
+
     def test_change_ingredient_amount(self):
         user_repository.create_user(self.user_hemmo)
         recipe_repository.add_recipe(self.recipe_puuro, self.user_hemmo)
@@ -109,6 +158,19 @@ class TestRecipeRepository(unittest.TestCase):
         ingredients = recipe_repository.find_ingredients_by_recipe(
             'puuro', self.user_hemmo)
         self.assertEqual(ingredients[-1], ('jauheliha', '800 g'))
+
+    def test_change_ingredient_amount_does_not_change_other_users_recipes(self):
+        user_repository.create_user(self.user_hemmo)
+        recipe_repository.add_recipe(self.recipe_puuro, self.user_hemmo)
+
+        user_repository.create_user(self.user_haiku)
+        recipe_repository.add_recipe(self.recipe_puuro, self.user_haiku)
+        recipe_repository.change_ingredient_amount(
+            'puuro', 'jauheliha', '800 g', self.user_haiku)
+
+        ingredients = recipe_repository.find_ingredients_by_recipe(
+            'puuro', self.user_hemmo)
+        self.assertEqual(ingredients[-1], ('jauheliha', '500 g'))
 
     def test_insert_an_ingredient(self):
         user_repository.create_user(self.user_hemmo)
@@ -120,6 +182,19 @@ class TestRecipeRepository(unittest.TestCase):
             'puuro', self.user_hemmo)
         self.assertEqual(ingredients[-1], ('öljy', '1 rkl'))
 
+    def test_insert_an_ingredient_does_not_change_other_users_recipes(self):
+        user_repository.create_user(self.user_hemmo)
+        recipe_repository.add_recipe(self.recipe_puuro, self.user_hemmo)
+
+        user_repository.create_user(self.user_haiku)
+        recipe_repository.add_recipe(self.recipe_puuro, self.user_haiku)
+        recipe_repository.insert_an_ingredient(
+            'puuro', 'öljy', '1 rkl', self.user_haiku)
+
+        ingredients = recipe_repository.find_ingredients_by_recipe(
+            'puuro', self.user_hemmo)
+        self.assertEqual(ingredients[-1], ('jauheliha', '500 g'))
+
     def test_delete_an_ingredient(self):
         user_repository.create_user(self.user_hemmo)
         recipe_repository.add_recipe(self.recipe_puuro, self.user_hemmo)
@@ -129,3 +204,16 @@ class TestRecipeRepository(unittest.TestCase):
         ingredients = recipe_repository.find_ingredients_by_recipe(
             'puuro', self.user_hemmo)
         self.assertEqual(ingredients[-1], ('vesi', '3 l'))
+
+    def test_delete_an_ingredient_does_not_change_other_users_recipes(self):
+        user_repository.create_user(self.user_hemmo)
+        recipe_repository.add_recipe(self.recipe_puuro, self.user_hemmo)
+
+        user_repository.create_user(self.user_haiku)
+        recipe_repository.add_recipe(self.recipe_puuro, self.user_haiku)
+        recipe_repository.delete_an_ingredient(
+            'puuro', 'jauheliha', self.user_haiku)
+
+        ingredients = recipe_repository.find_ingredients_by_recipe(
+            'puuro', self.user_hemmo)
+        self.assertEqual(ingredients[-1], ('jauheliha', '500 g'))
