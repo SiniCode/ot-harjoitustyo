@@ -36,18 +36,18 @@ poetry run invoke build
 Tietokantaoperaatioista vastaavat *repositories*-pakkauksen luokat [UserRepository](https://github.com/SiniCode/ot-harjoitustyo/blob/main/src/repositories/user_repository.py)
 ja [RecipeRepository](https://github.com/SiniCode/ot-harjoitustyo/blob/main/src/repositories/recipe_repository.py).
 
+Tietokantatiedoston nimi määritellään sovelluksen juureen sijoitetussa konfiguraatiotiedostossa .env.
 
-## Tärkeimmät toiminnallisuudet (täydentyy myöhemmin)
+Tietokannassa on kolme taulua: Users, Recipes ja Ingredients. Taulut alustetaan initialize_database.py-tiedostossa.
 
-Sovelluksen tärkeimmät toiminnallisuudet kuvattuna sekvenssikaavioina.
 
-### Käyttäjän kirjautuminen sisään
+## Esimerkki sovelluksen toiminnallisuudesta sekvenssikaaviona: sisään kirjautuminen
 
 Kun käyttäjä avaa sovelluksen, näytöllä näkyvät vaihtoehdot, joista ensimmäinen on sisään kirjautuminen.
 Käyttäjä kutsuu käyttöliittymän login-metodia antamalla näppäimistöltä komennon "1".
 Sekvenssikaavio kuvaa, mitä sovelluksessa tapahtuu tämän jälkeen, jotta käyttäjä saadaan kirjattua sisään.
 
-![](./kuvat/login.png)
+![Sisään kirjautuminen](./kuvat/login.png)
 
 Käyttöliittymästä vastaava UI lukee käyttäjän syötteistä käyttäjätunnuksen ja salasanan 
 ja antaa ne sitten parametreina sovelluslogiikasta vastaavan Service-luokan *login*-metodille.
