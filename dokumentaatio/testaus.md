@@ -28,7 +28,7 @@ on konfiguroitu _.env.test_-tiedostoon.
 Sovelluksen testauksen haarautumakattavuus on 98%.
 Haarautumakattavuuden määrityksessä ei ole huomioitu käyttöliittymäkerrosta.
 
-![](.kuvat/coverage_report.png)
+![](./kuvat/coverage_report.png)
 
 ## Sovellukseen jääneet laatuongelmat
 
