@@ -15,9 +15,14 @@ Pakkaus *entities* sisältää luokkia, jotka kuvastavat sovelluksen käyttämi�
 
 Sovelluslogiikasta vastaavat metodit on koottu omaan [Service-luokkaansa](https://github.com/SiniCode/ot-harjoitustyo/blob/main/src/services/service.py).
 Käyttöliittymän toiminnallisuudet on toteutettu kutsumalla näitä metodeita.
+
 Tietokantaoperaatiot on eristetty sovelluslogiikasta, joten Service-luokka
 puolestaan kutsuu tarvittaessa niistä vastaavia luokkia [UserRepository](https://github.com/SiniCode/ot-harjoitustyo/blob/main/src/repositories/user_repository.py)
 ja [RecipeRepository](https://github.com/SiniCode/ot-harjoitustyo/blob/main/src/repositories/recipe_repository.py).
+Riippuvuudet repositorioluokkiin injektoidaan Service-luokan konstruktorikutsun yhteydessä.
+
+Sovelluksen osien välisiä riippuvuuksia kuvaava luokka- ja pakkauskaavio:
+![Pakkaukset ja luokat](./kuvat/luokkakaavio.png)
 
 ## Tietojen pysyväistallennus
 
