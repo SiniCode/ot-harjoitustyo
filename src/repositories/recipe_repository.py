@@ -6,9 +6,11 @@ from database_connection import get_db_connection
 def get_id_by_row(row):
     return row['id'] if row else None
 
-
 def get_name_by_row(row):
     return row['name'] if row else None
+
+def get_category_by_row(row):
+    return row['category'] if row else None
 
 
 class RecipeRepository:
@@ -23,6 +25,27 @@ class RecipeRepository:
 
         self._connection = connection
 
+    def _get_user_id(self, user):
+        """Luokan metodi, joka palauttaa pyydetyn käyttäjän id-numeron.
+
+        Args:
+            user: User-olio, joka kuvaa käyttäjän, jonka id-numero halutaan
+
+        Returns:
+            Pyydetyn käyttäjän id-numero
+        """
+
+        cursor = self._connection.cursor()
+
+        row = cursor.execute(
+            "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
+
+        user_id = get_id_by_row(row)
+
+        cursor.close()
+
+        return user_id
+
     def add_recipe(self, recipe, user):
         """Tallentaa uuden reseptin tietokantaan.
 
@@ -34,19 +57,20 @@ class RecipeRepository:
             Recipe-olio, joka kuvaa tallennettua reseptiä
         """
 
-        cursor = self._connection.cursor()
+        user_id = self._get_user_id(user)
 
-        row = cursor.execute(
-            "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
-        user_id = get_id_by_row(row)
+        cursor = self._connection.cursor()
 
         cursor.execute(
             "INSERT INTO Recipes (name, category, user_id) VALUES (?, ?, ?)",
             [recipe.name, recipe.category, user_id])
 
         cursor.execute(
-            "SELECT * FROM Recipes WHERE name=? AND user_id=?", (recipe.name, user_id))
+            "SELECT * FROM Recipes WHERE name=? AND user_id=?",
+            (recipe.name, user_id))
+
         row = cursor.fetchone()
+
         recipe_id = get_id_by_row(row)
 
         query = """INSERT INTO Ingredients (name, amount, recipe_id) VALUES (?, ?, ?)"""
@@ -68,26 +92,29 @@ class RecipeRepository:
             user: User-olio, joka kertoo, kenen tallentama resepti poistetaan
         """
 
+        user_id = self._get_user_id(user)
+
         cursor = self._connection.cursor()
 
-        row = cursor.execute(
-            "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
-        user_id = get_id_by_row(row)
-
         cursor.execute(
-            "SELECT * FROM Recipes WHERE name=? AND user_id=?", (recipe, user_id))
+            "SELECT * FROM Recipes WHERE name=? AND user_id=?",
+            (recipe, user_id))
+
         row = cursor.fetchone()
+
         recipe_id = get_id_by_row(row)
 
         cursor.execute(
             "DELETE FROM Ingredients WHERE recipe_id=?", [recipe_id])
+
         cursor.execute("DELETE FROM Recipes WHERE id=?", [recipe_id])
 
         self._connection.commit()
         cursor.close()
 
     def find_recipes_by_user(self, user, category=None):
-        """Luokan metodi, joka etsii kaikkien käyttäjän tallentamien reseptien nimet.
+        """Luokan metodi, joka etsii kaikkien käyttäjän tallentamien
+           reseptien nimet.
 
         Args:
             user: User-olio, joka kuvaa kirjautunutta käyttäjää
@@ -95,14 +122,13 @@ class RecipeRepository:
                       halutaan mukaan, vapaaehtoinen
 
         Returns:
-            lista käyttäjän tallentamien reseptien nimistä
+            lista tupleja, jotka ilmoittavat käyttäjän tallentamien reseptien
+            nimen ja kategorian
         """
 
-        cursor = self._connection.cursor()
+        user_id = self_get_user_id(user)
 
-        row = cursor.execute(
-            "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
-        user_id = get_id_by_row(row)
+        cursor = self._connection.cursor()
 
         if category is not None:
             recipes = cursor.execute(
@@ -116,35 +142,37 @@ class RecipeRepository:
 
         result = []
         for row in recipes:
-            result.append(get_name_by_row(row))
+            result.append((get_name_by_row(row), get_category_by_row(row)))
 
         return result
 
     def find_recipe_by_ingredient(self, ingredient, user, category=None):
-        """Luokan metodi, joka etsii niiden käyttäjän tallentamien reseptien nimet,
-           joissa haettu aines esiintyy.
+        """Luokan metodi, joka etsii niiden käyttäjän tallentamien
+           reseptien nimet, joissa haettu aines esiintyy.
 
         Args:
-            ingredient: merkkijono, joka kertoo, minkä aineksen perusteella haku suoritetaan
-            user: User-olio, joka kuvaa käyttäjän, jonka tallentamia reseptejä haetaan
-            category: merkkijono, joka kertoo, minkä kategorian reseptejä haetaan, vapaaehtoinen
-
+            ingredient: merkkijono, joka kertoo, minkä aineksen perusteella
+                        haku suoritetaan
+            user: User-olio, joka kuvaa käyttäjän, jonka tallentamia
+                  reseptejä haetaan
+            category: merkkijono, joka kertoo, minkä kategorian reseptejä
+                      haetaan, vapaaehtoinen
 
         Returns:
-            lista hakua vastaavien reseptien nimistä
+            lista tupleja, jotka ilmoittavat hakua vastaavien reseptien
+            nimet ja kategoriat
         """
 
-        cursor = self._connection.cursor()
+        user_id = self._get_user_id(user)
 
-        row = cursor.execute(
-            "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
-        user_id = get_id_by_row(row)
+        cursor = self._connection.cursor()
 
         if category is not None:
             query = """SELECT * FROM Recipes R, Ingredients I
                          WHERE R.user_id=? AND R.id = I.recipe_id AND
                          I.name=? AND R.category=?"""
             values = [user_id, ingredient, category]
+
         else:
             query = """SELECT * FROM Recipes R, Ingredients I
                      WHERE R.user_id=? AND R.id = I.recipe_id AND I.name=?"""
@@ -156,29 +184,32 @@ class RecipeRepository:
 
         result = []
         for row in recipes:
-            result.append(get_name_by_row(row))
+            result.append((get_name_by_row(row), get_category_by_row(row)))
 
         return result
 
     def find_ingredients_by_recipe(self, recipe, user):
-        """Luokan metodi, joka etsii annettuun reseptiin tarvittavat raaka-aineet ja niiden määrän.
+        """Luokan metodi, joka etsii annettuun reseptiin tarvittavat
+           raaka-aineet ja niiden määrän.
 
         Args:
             recipe: merkkijono, joka kertoo haettavan reseptin nimen
-            user: User-olio, joka kertoo, kenen tallentamia reseptejä tarkastellaan
+            user: User-olio, joka kertoo, kenen tallentamia reseptejä
+                  tarkastellaan
 
         Returns:
-            lista tupleja, jotka ilmoittavat reseptiin tarvittavat ainekset ja niiden määrän
+            lista tupleja, jotka ilmoittavat reseptiin tarvittavat ainekset
+            ja niiden määrän
         """
+
+        user_id = self_get_user_id(user)
 
         cursor = self._connection.cursor()
 
         row = cursor.execute(
-            "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
-        user_id = get_id_by_row(row)
+            "SELECT * FROM Recipes WHERE name=? AND user_id=?",
+            (recipe, user_id)).fetchone()
 
-        row = cursor.execute(
-            "SELECT * FROM Recipes WHERE name=? AND user_id=?", (recipe, user_id)).fetchone()
         recipe_id = get_id_by_row(row)
 
         query = """SELECT I.name, I.amount FROM Ingredients I, Recipes R
@@ -198,19 +229,21 @@ class RecipeRepository:
         """Luokan metodi, joka muuttaa reseptin nimen tietokannassa.
 
         Args:
-            old_name: merkkijono, joka kertoo, minkä reseptin nimi halutaan muuttaa
+            old_name: merkkijono, joka kertoo, minkä reseptin nimi
+                      halutaan muuttaa
             new_name: merkkijono, joka kertoo uuden nimen
-            user = User-olio, joka kertoo, kenen tallentamasta reseptistä on kyse
+            user: User-olio, joka kertoo, kenen tallentamasta
+                  reseptistä on kyse
         """
+
+        user_id = self_get_user_id(user)
 
         cursor = self._connection.cursor()
 
         row = cursor.execute(
-            "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
-        user_id = get_id_by_row(row)
+            "SELECT * FROM Recipes WHERE name=? AND user_id=?",
+            (old_name, user_id)).fetchone()
 
-        row = cursor.execute(
-            "SELECT * FROM Recipes WHERE name=? AND user_id=?", (old_name, user_id)).fetchone()
         recipe_id = get_id_by_row(row)
 
         query = """UPDATE Recipes SET name=? WHERE id=?"""
@@ -225,15 +258,15 @@ class RecipeRepository:
 
         Args:
             recipe: merkkijono, joka kertoo reseptin nimen
-            new_category: merkkijono, joka kertoo kategorian, johon resepti siirretään
-            user: User-olio, joka kertoo, kenen tallentamaa reseptiä käsitellään
+            new_category: merkkijono, joka kertoo kategorian,
+                          johon resepti siirretään
+            user: User-olio, joka kertoo, kenen tallentamaa reseptiä
+                  käsitellään
         """
 
-        cursor = self._connection.cursor()
+        user_id = self._get_user_id(user)
 
-        row = cursor.execute(
-            "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
-        user_id = get_id_by_row(row)
+        cursor = self._connection.cursor()
 
         query = """UPDATE Recipes SET category=? WHERE name=? AND user_id=?"""
         values = (new_category, recipe, user_id)
@@ -247,19 +280,20 @@ class RecipeRepository:
 
         Args:
             recipe: merkkijono, joka kertoo, mitä reseptiä halutaan muuttaa
-            ingredient: merkkijono, joka kertoo, minkä aineksen määrä halutaan muuttaa
+            ingredient: merkkijono, joka kertoo, minkä aineksen määrä
+                        halutaan muuttaa
             new_amount: merkkijono, joka ilmoittaa uuden määrän
             user: User-olio, joka kertoo, kenen tallentamaa reseptiä muutetaan
         """
 
+        user_id = self._get_user_id(user)
+
         cursor = self._connection.cursor()
 
         row = cursor.execute(
-            "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
-        user_id = get_id_by_row(row)
+            "SELECT * FROM Recipes WHERE name=? AND user_id=?",
+            (recipe, user_id)).fetchone()
 
-        row = cursor.execute(
-            "SELECT * FROM Recipes WHERE name=? AND user_id=?", (recipe, user_id)).fetchone()
         recipe_id = get_id_by_row(row)
 
         query = """UPDATE Ingredients SET amount=? WHERE name=? AND recipe_id=?"""
@@ -279,14 +313,14 @@ class RecipeRepository:
             user: User-olio, joka kertoo, kenen tallentamaa reseptiä muutetaan
         """
 
+        user_id = self._get_user_id(user)
+
         cursor = self._connection.cursor()
 
         row = cursor.execute(
-            "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
-        user_id = get_id_by_row(row)
+            "SELECT * FROM Recipes WHERE name=? AND user_id=?",
+            (recipe, user_id)).fetchone()
 
-        row = cursor.execute(
-            "SELECT * FROM Recipes WHERE name=? AND user_id=?", (recipe, user_id)).fetchone()
         recipe_id = get_id_by_row(row)
 
         query = """INSERT INTO Ingredients (name, amount, recipe_id) VALUES (?, ?, ?)"""
@@ -306,14 +340,14 @@ class RecipeRepository:
             user: User-olio, joka kertoo, kenen tallentamaa reseptiä muokataan
         """
 
+        user_id = self._get_user_id(user)
+
         cursor = self._connection.cursor()
 
         row = cursor.execute(
-            "SELECT * FROM Users WHERE username=?", [user.username]).fetchone()
-        user_id = get_id_by_row(row)
+            "SELECT * FROM Recipes WHERE name=? AND user_id=?",
+            (recipe, user_id)).fetchone()
 
-        row = cursor.execute(
-            "SELECT * FROM Recipes WHERE name=? AND user_id=?", (recipe, user_id)).fetchone()
         recipe_id = get_id_by_row(row)
 
         query = """DELETE FROM Ingredients WHERE name=? AND recipe_id=?"""
@@ -334,6 +368,7 @@ class RecipeRepository:
 
         self._connection.commit()
         cursor.close()
+
 
 
 recipe_repository = RecipeRepository(get_db_connection())
