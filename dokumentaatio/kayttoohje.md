@@ -25,8 +25,7 @@ jotta käyttö olisi mahdollisimman sujuvaa.
 
 ## Sovellukseen kirjautuminen/uuden käyttäjän luominen
 
-Sovelluksen käynnistyksen jälkeen on mahdollista kirjautua sisään näppäinkomennolla **1** (sign in),
-vahvistamalla sisäänkirjautuminen näppäilemällä **y** ja syöttämällä käyttäjänimi ja salasana.
+Sovelluksen käynnistyksen jälkeen on mahdollista kirjautua sisään näppäinkomennolla **1** ja syöttämällä käyttäjänimi ja salasana.
 
 Jos käyttäjätunnusta ei vielä ole, sen voi luoda näppäinkomennolla **2**, minkä jälkeen käyttäjän luominen etenee kuten sisään kirjautuminenkin.
 
@@ -90,4 +89,4 @@ näppäinkomennolla **6** ja syöttämällä näiden reseptien nimet yksi kerral
 
 Kirjautunut käyttäjä voi kirjautua ulos näppäinkomennolla **7**.
 Tämä ei kuitenkaan vielä sulje sovellusta, vaan sovellus palaa käynnistysnäkymään.
-Sovelluksen voi sulkea komennolla **3**.
+Käynnistysnäkymässä sovelluksen voi sulkea komennolla **3**.
