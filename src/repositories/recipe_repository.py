@@ -6,8 +6,10 @@ from database_connection import get_db_connection
 def get_id_by_row(row):
     return row['id'] if row else None
 
+
 def get_name_by_row(row):
     return row['name'] if row else None
+
 
 def get_category_by_row(row):
     return row['category'] if row else None
@@ -368,7 +370,6 @@ class RecipeRepository:
 
         self._connection.commit()
         cursor.close()
-
 
 
 recipe_repository = RecipeRepository(get_db_connection())

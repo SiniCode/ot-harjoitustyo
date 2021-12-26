@@ -279,12 +279,12 @@ class UI:
 
         recipe_ingredients = service.find_ingredients(recipe)
 
-        for (name,amount) in recipe_ingredients:
+        for (name, amount) in recipe_ingredients:
             if name == ingredient:
                 return
-            if (name,amount) == recipe_ingredients[-1]:
-               print(f"Recipe {recipe} doesn't contain {ingredient}")
-               self.logged_in_main()
+            if (name, amount) == recipe_ingredients[-1]:
+                print(f"Recipe {recipe} doesn't contain {ingredient}")
+                self.logged_in_main()
 
     def remove_an_ingredient(self, recipe):
         """Luokan metodi, joka poistaa reseptistä tallennetun aineksen.

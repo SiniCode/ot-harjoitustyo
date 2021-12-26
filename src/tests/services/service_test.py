@@ -203,4 +203,3 @@ class TestService(unittest.TestCase):
         ingredients = service.find_ingredients('puuro')
 
         self.assertEqual(ingredients[-1][0], 'kaurahiutaleet')
-

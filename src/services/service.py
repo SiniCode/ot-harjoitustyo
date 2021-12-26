@@ -13,11 +13,14 @@ from repositories.recipe_repository import (
 class UsernameExistsError(Exception):
     pass
 
+
 class UsernameNotValidError(Exception):
     pass
 
+
 class PasswordNotValidError(Exception):
     pass
+
 
 class InvalidCredentialsError(Exception):
     pass
@@ -286,7 +289,6 @@ class Service:
 
         self._user_repository.delete_all()
         self._recipe_repository.delete_all()
-
 
 
 service = Service()

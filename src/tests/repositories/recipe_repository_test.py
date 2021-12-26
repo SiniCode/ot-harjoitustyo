@@ -116,7 +116,8 @@ class TestRecipeRepository(unittest.TestCase):
 
         user_repository.create_user(self.user_haiku)
         recipe_repository.add_recipe(self.recipe_puuro, self.user_haiku)
-        recipe_repository.change_recipe_name('puuro', 'koiran puuro', self.user_haiku)
+        recipe_repository.change_recipe_name(
+            'puuro', 'koiran puuro', self.user_haiku)
 
         self.assertEqual(recipe_repository.find_recipes_by_user(
             self.user_hemmo), [('puuro', 'not defined')])

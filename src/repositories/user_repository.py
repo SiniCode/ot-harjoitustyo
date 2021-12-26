@@ -70,5 +70,4 @@ class UserRepository:
         cursor.close()
 
 
-
 user_repository = UserRepository(get_db_connection())
