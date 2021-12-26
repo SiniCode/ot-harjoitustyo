@@ -13,7 +13,7 @@ class UserRepository:
         """Luokan konstruktori.
 
         Args:
-            connection: Connection-olio, jokakuvaa tietokantayhteyttä
+            connection: Connection-olio, joka kuvaa tietokantayhteyttä
         """
 
         self._connection = connection
@@ -34,12 +34,13 @@ class UserRepository:
                        [user.username, user.password])
 
         self._connection.commit()
+        cursor.close()
 
         return user
 
     def find_by_username(self, username):
-        """Palauttaa käyttäjän käyttäjätunnuksen perusteella,
-           jos käyttäjä on tallennettu tietokantaan.
+        """Luokan metodi, joka palauttaa käyttäjän käyttäjätunnuksen
+           perusteella, jos käyttäjä on tallennettu tietokantaan.
 
         Args:
             username: Merkkijono, joka kuvaa haettavan käyttäjän käyttäjätunnusta
@@ -54,6 +55,7 @@ class UserRepository:
         cursor.execute('SELECT * FROM Users WHERE username = ?', [username])
 
         row = cursor.fetchone()
+        cursor.close()
 
         return get_user_by_row(row)
 
@@ -65,6 +67,8 @@ class UserRepository:
         cursor.execute('DELETE FROM Users')
 
         self._connection.commit()
+        cursor.close()
+
 
 
 user_repository = UserRepository(get_db_connection())
