@@ -13,14 +13,11 @@ from repositories.recipe_repository import (
 class UsernameExistsError(Exception):
     pass
 
-
 class UsernameNotValidError(Exception):
     pass
 
-
 class PasswordNotValidError(Exception):
     pass
-
 
 class InvalidCredentialsError(Exception):
     pass
@@ -45,19 +42,25 @@ class Service:
         """Luokan metodi, joka luo uuden käyttäjän ja kirjaa sen samalla sisään.
 
         Args:
-            username: 3-15 merkkiä pitkä merkkijono, joka toimii käyttäjän käyttäjätunnuksena
-            password: 3-15 merkkiä pitkä merkkijono, joka toimii käyttäjän salasanana
+            username: 3-15 merkkiä pitkä merkkijono, joka toimii
+                      käyttäjän käyttäjätunnuksena
+            password: 3-15 merkkiä pitkä merkkijono, joka toimii
+                      käyttäjän salasanana
 
         Raises:
-            UsernameExistsError: virhe, joka tapahtuu, jos käyttäjätunnus on varattu
-            UsernameNotValidError: virhe, joka tapahtuu, jos käyttäjätunnus rikkoo pituusvaatimusta
-            PasswordNotValidError: virhe, joka tapahtuu, jos salasana rikkoo pituusvaatimusta
+            UsernameExistsError: virhe, joka tapahtuu, jos käyttäjätunnus
+                                 on varattu
+            UsernameNotValidError: virhe, joka tapahtuu, jos käyttäjätunnus
+                                   rikkoo pituusvaatimusta
+            PasswordNotValidError: virhe, joka tapahtuu, jos salasana
+                                   rikkoo pituusvaatimusta
 
         Returns:
             User-olio, joka kuvaa luotua käyttäjää
         """
 
         existing_user = self._user_repository.find_by_username(username)
+
         if existing_user is not None:
             raise UsernameExistsError(f'Username {username} is already in use')
 
@@ -70,6 +73,7 @@ class Service:
                 "Password must be 3 to 15 characters long")
 
         user = self._user_repository.create_user(User(username, password))
+
         self._user = user
 
         return user
@@ -78,12 +82,14 @@ class Service:
         """Luokan metodi, joka kirjaa käyttäjän sisään.
 
         Args:
-            username: merkkijono, joka toimii kirjautuvan käyttäjän käyttäjätunnuksena
+            username: merkkijono, joka toimii kirjautuvan käyttäjän
+                      käyttäjätunnuksena
             password: merkkijono, joka toimii kirjautuvan käyttäjän salasanana
 
         Raises:
-            InvalidCredentialsError: virhe, joka tapahtuu, jos käyttäjää ei löydy
-                                     tai käyttäjätunnus ja salasana eivät vastaa toisiaan
+            InvalidCredentialsError: virhe, joka tapahtuu, jos käyttäjää ei
+                                     löydy tai käyttäjätunnus ja salasana
+                                     eivät vastaa toisiaan
 
         Returns:
             User-olio, joka kuvaa kirjautunutta käyttäjää
@@ -117,9 +123,10 @@ class Service:
 
         Args:
             name: merkkijono, joka nimeää reseptin
-            ingredients: lista tupleja, jotka ilmoittavat reseptiin tarvittavat ainekset
-                         ja niiden määrän, vapaaehtoinen
-            category: merkkijono, joka luokittelee reseptin tiettyyn kategoriaan, vapaaehtoinen
+            ingredients: lista tupleja, jotka ilmoittavat reseptiin
+                         tarvittavat ainekset ja niiden määrän, vapaaehtoinen
+            category: merkkijono, joka luokittelee reseptin tiettyyn
+                      kategoriaan, vapaaehtoinen
 
         Returns:
             Recipe-olio, joka kuvaa tallennetun reseptin
@@ -142,16 +149,20 @@ class Service:
         self._recipe_repository.delete_recipe(recipe_name, user)
 
     def find_recipes(self, category=None):
-        """Luokan metodi, joka hakee kirjautuneen käyttäjän reseptit tietokannasta.
+        """Luokan metodi, joka hakee kirjautuneen käyttäjän reseptit
+           tietokannasta.
 
         Args:
             merkkijono, joka rajaa haun tiettyyn kategoriaan, vapaaehtoinen
 
         Returns:
-            lista kirjautuneen käyttäjän tallentamien reseptien nimistä aakkosjärjestyksessä
+            lista tupleja, jotka kertovat kirjautuneen käyttäjän tallentamien
+            reseptien nimet ja kategoriat järjestettynä aakkosjärjestykseen
+            reseptin nimen mukaan
         """
 
         user = self.get_current_user()
+
         recipes = self._recipe_repository.find_recipes_by_user(user, category)
 
         result = []
@@ -166,14 +177,18 @@ class Service:
            joissa annettu ainesosa esiintyy.
 
         Args:
-            ingredient: merkkijono, joka kertoo, minkä ainesosan perusteella haku tehdään
-            category: merkkijono, joka rajaa haun tiettyyn kategoriaan, vapaaehtoinen
+            ingredient: merkkijono, joka kertoo, minkä ainesosan
+                        perusteella haku tehdään
+            category: merkkijono, joka rajaa haun tiettyyn kategoriaan,
+                      vapaaehtoinen
 
         Returns:
-            lista hakua vastaavien reseptien nimistä aakkosjärjestyksessä
+            lista tupleja, jotka kertovat hakua vastaavien reseptien nimet ja
+            kategoriat aakkosjärjestyksessä nimen mukaan
         """
 
         user = self.get_current_user()
+
         recipes = self._recipe_repository.find_recipe_by_ingredient(
             ingredient, user, category)
 
@@ -185,16 +200,19 @@ class Service:
         return result
 
     def find_ingredients(self, recipe):
-        """Luokan metodi, joka hakee pyydettyyn reseptiin tarvittavat raaka-aineet.
+        """Luokan metodi, joka hakee pyydettyyn reseptiin tarvittavat
+           raaka-aineet.
 
         Args:
             recipe: merkkijono, joka kertoo haettavan reseptin nimen
 
         Returns:
-            lista reseptiin tarvittavista raaka-aineista ja niiden määristä tallennusjärjestyksessä
+            lista reseptiin tarvittavista raaka-aineista ja niiden määristä
+            tallennusjärjestyksessä
         """
 
         user = self.get_current_user()
+
         ingredients = self._recipe_repository.find_ingredients_by_recipe(
             recipe, user)
 
@@ -204,7 +222,8 @@ class Service:
         """Luokan metodi, jonka avulla voi muuttaa reseptin nimeä.
 
         Args:
-            old_name: merkkijono, joka ilmoittaa, minkä reseptin nimi vaihdetaan
+            old_name: merkkijono, joka ilmoittaa, minkä reseptin nimi
+                      vaihdetaan
             new_name: merkkijono, joka ilmoittaa uuden nimen
         """
 
@@ -216,7 +235,8 @@ class Service:
 
         Args:
             recipe: merkkijono, joka kertoo, muokattavan reseptin nimen
-            new_category: merkkijono, joka kertoo, mihin kategoriaan resepti luokitellaan
+            new_category: merkkijono, joka kertoo, mihin kategoriaan
+                          resepti luokitellaan
         """
 
         user = self.get_current_user()
@@ -228,7 +248,8 @@ class Service:
 
         Args:
             recipe: merkkijono, joka kertoo, mitä reseptiä halutaan muuttaa
-            ingredient: merkkijono, joka kertoo, minkä aineksen määrä halutaan muuttaa
+            ingredient: merkkijono, joka kertoo, minkä aineksen määrä
+                        halutaan muuttaa
             new_amount: merkkijono, joka ilmoittaa uuden määrän
         """
 
@@ -265,6 +286,7 @@ class Service:
 
         self._user_repository.delete_all()
         self._recipe_repository.delete_all()
+
 
 
 service = Service()
