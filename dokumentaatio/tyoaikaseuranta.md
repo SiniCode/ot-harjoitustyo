@@ -9,4 +9,6 @@
 | 30.11.2021 | 6         | uudet toiminnallisuudet käyttöliittymään, uusia testejä, ongelmien ratkomista |
 | 7.12.2021  | 10        | toiminnallisuuksien ja testien lisääminen, koodin formatointi, ensimmäiset pakkaus- ja sekvenssikaaviot ja ensimmäinen release |
 | 14.12.2021 | 8         | lisää toimintoja ja testejä, sovelluslogiikan ja käyttöohjeiden kirjoittaminen, toinen release |
-| **Yht.**   | 37        |           |
+| 25.12.2021 | 1         | manuaalista testausta |
+| 26.12.2021 | 9         | koodin siistiminen, lisää testejä, dokumentaation laajentaminen ja päivittäminen, kolmas release |
+| **Yht.**   | 47        |           |
