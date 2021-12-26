@@ -137,7 +137,7 @@ class UI:
 
         while True:
             narrow_search = input(
-                "Would you like to search within a certain category (y/n)? ").s>
+                "Would you like to search within a certain category (y/n)? ").strip()
 
             if narrow_search == "y" or narrow_search == "Y":
                 print()
@@ -161,7 +161,7 @@ class UI:
         print("Your recipes:")
         print()
         for (name, category) in recipes:
-            print(f"({name:40} ({category})")
+            print(f"{name:40} ({category})")
 
         self.logged_in_main()
 
@@ -180,7 +180,7 @@ class UI:
         print(f"Your recipes including {ingredient}:")
         print()
         for (name, category) in recipes:
-            print(f"({name:40} ({category})")
+            print(f"{name:40} ({category})")
 
         self.logged_in_main()
 
@@ -189,12 +189,8 @@ class UI:
            ja niiden määrät tallennusjärjestyksessä."""
 
         name = input("Which recipe would you like to see? ").strip()
-        user_recipes = service.find_recipes()
 
-        if not name in user_recipes:
-            print()
-            print(f"{name} not found")
-            self.logged_in_main()
+        self._check_user_recipes(name)
 
         ingredients = service.find_ingredients(name)
 
@@ -281,7 +277,7 @@ class UI:
             ingredient: merkkijono, joka kertoo, mitä ainesta etsitään
         """
 
-        recipe_ingredients = servece.find_ingredients(recipe)
+        recipe_ingredients = service.find_ingredients(recipe)
 
         for (name,amount) in recipe_ingredients:
             if name == ingredient:
@@ -469,7 +465,7 @@ class UI:
         while True:
             print()
             add = input(
-                "Would you like to add another recipe to calculation (y/n) ").s>
+                "Would you like to add another recipe to calculation (y/n) ").strip()
             print()
 
             if add == "y" or add == "Y":

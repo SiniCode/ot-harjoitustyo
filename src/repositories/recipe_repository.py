@@ -126,7 +126,7 @@ class RecipeRepository:
             nimen ja kategorian
         """
 
-        user_id = self_get_user_id(user)
+        user_id = self._get_user_id(user)
 
         cursor = self._connection.cursor()
 
@@ -202,7 +202,7 @@ class RecipeRepository:
             ja niiden määrän
         """
 
-        user_id = self_get_user_id(user)
+        user_id = self._get_user_id(user)
 
         cursor = self._connection.cursor()
 
@@ -236,7 +236,7 @@ class RecipeRepository:
                   reseptistä on kyse
         """
 
-        user_id = self_get_user_id(user)
+        user_id = self._get_user_id(user)
 
         cursor = self._connection.cursor()
 
